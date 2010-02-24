@@ -48,11 +48,12 @@ let simplify_t                  = ref true  (* simplify and prune vacouos FixCon
 let root                        = ref ""    (* root function *)
 let true_unconstrained          = ref true  (* -true_unconstrained *)
 let do_nothing                  = ref false (* -nop *)
+let dump_imp                    = ref false (* -imp *)
 (* JHALA: what do these do ? *)
 let psimple       = ref true            (* -psimple *)
-let no_simple     = ref false           (* -no-simple *)
+let no_simple     = ref false           (* -no-simple :: this turned an optimization off in the dsolve solver *)
 let verify_simple = ref false           (* -verify-simple *)
-let dump_graph    = ref false           (* -dgraph *)
+let dump_graph    = ref false           (* -dgraph :: this probably caused the dsolve solver to dump the constraint graph *)
 let dropcalls     = ref false           (* -dropcalls *)
 
 (****************************************************************)
@@ -219,7 +220,10 @@ let arg_spec =
     ("library path for default spec, quals ["^(!lib_path)^"]"));
    ("-nop",
     Arg.Set do_nothing,
-    "do nothing (useful for regression tests known to be broken)")
+    "do nothing (useful for regression tests known to be broken)");
+   ("-imp",
+    Arg.Set dump_imp,
+    "print constraints as IMP program (experimental)")
   ]
 
 
