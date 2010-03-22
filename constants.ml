@@ -37,6 +37,7 @@ let ol_default          = 2
 let verbose_level       = ref ol_default       (* -v *)
 let latex_file: string option ref = ref None   (* translate to LaTeX file *)
 let armc_file: string option ref  = ref None   (* translate to ARMC file *)
+let cfg_armc_file: string option ref  = ref None   (* translate to ARMC file with CFG *)
 let q_armc_file: string option ref = ref None   (* translate to Q'ARMC file *)
 let hc_armc_file: string option ref = ref None   (* translate to HC'ARMC file *)
 let dot_file: string option ref = ref None   (* translate to dot file *)
@@ -179,6 +180,15 @@ let arg_spec =
 		    else
 		      armc_file := Some s),
     "translate constraints to ARMC file"
+   );
+   ("-cfg-armc", 
+    Arg.String (fun s -> 
+		  let l = String.length s in
+		    if l = 0 then
+		      print_endline "-cfg-armc: invalid parameter"
+		    else
+		      cfg_armc_file := Some s),
+    "translate constraints to ARMC file with CFG"
    );
    ("-qarmc", 
     Arg.String (fun s -> 
