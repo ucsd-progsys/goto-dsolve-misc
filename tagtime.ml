@@ -116,7 +116,7 @@ let dump_to_channel chn =
   let rec prTree tags node =
     let s, ts = node.name in
     let tags' = [s] ++ ts ++ tags in
-    let time' = node.time -. (subtime node) in
+    let time' = max 0.0 (node.time -. (subtime node)) in
     Printf.fprintf chn "%s,%6.3f\n" (String.concat "," tags') time';
     List.iter (prTree tags') node.sub
   in prTree [] top 
