@@ -10,6 +10,7 @@ CFLAGS=-cflags -dtypes \
 
 TARGETS=misc.cma misc.cmxa \
 	bNstats.cma bNstats.cmxa \
+	tagtime.cma tagtime.cmxa \
 	timer.cma timer.cmxa \
 	constants.cma constants.cmxa \
 	fcommon.cma fcommon.cmxa \
@@ -22,5 +23,5 @@ all:
 clean:
 	rm -rf *.byte *.native _build _log
 
-timer:
-	ocamlbuild -r $(LIBS) $(IFLAGS) $(CFLAGS) timer.native
+test:
+	ocamlbuild -r $(LIBS) $(IFLAGS) $(CFLAGS) timetest.native

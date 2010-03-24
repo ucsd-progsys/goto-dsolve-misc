@@ -1,5 +1,5 @@
 (*
- * Copyright ? 1990-2010 The Regents of the University of California. All rights reserved. 
+ * Copyright ? 1990-2007 The Regents of the University of California. All rights reserved. 
  *
  * Permission is hereby granted, without written agreement and without 
  * license or royalty fees, to use, copy, modify, and distribute this 
@@ -18,42 +18,20 @@
  * AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS 
  * ON AN "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION 
  * TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+ *
  *)
 
-open Misc.Ops
+(* Based on "Stats" by George Necula, Westley Weimer and Scott McPeak *)
 
-type t = {
-  name          : string; 
-  mutable last  : float;
-  mutable events: (int * string option * float) list;
-}
+(** Time a function and associate the time with the given 
+    (key) string and the list of (tags) strings. If some
+    timing information is already associated with the key 
+    string, then accumulate the times. If this function is 
+    invoked within another timed function then you can have 
+    a hierarchy of timings *)
+val time : string * string list -> ('a -> 'b) -> 'a -> 'b 
 
-let get_time  = fun _ -> (Unix.times ()).Unix.tms_utime
+(** [dump fname] saves the tagged profile to file *)
+val dump : string -> unit
 
-let create n = 
-  let now = get_time () in
-  { name   = n; 
-    events = [(0, None, 0.0)];
-    last   = now;
-  }
-
-let log_event t so =
-  match t.events with
-  | []         -> assertf "impossible" 
-  | (i,_,_)::_ -> let now = get_time () in
-                  t.events <- (i+1, so, now -. t.last)::t.events; 
-                  t.last   <- now 
-
-let to_events = fun t -> List.rev t.events
-let to_name   = fun t -> t.name
-
-let print_event ppf = function
-  | (i, Some s, f) -> Format.fprintf ppf "<%6d, %6.3f, %s>@\n" i f s
-  | (i, None  , f) -> Format.fprintf ppf "<%6d, %6.3f, *>@\n"  i f
-
-let print ppf t = 
-  Format.fprintf ppf "Timer %s :: @[%a@] \n" 
-    t.name 
-    (Misc.pprint_many false "" print_event) (to_events t) 
-
-
+val print: out_channel -> string -> unit
