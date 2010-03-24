@@ -55,6 +55,7 @@ let print ppf t =
 (*************** Unit Test ************************************)
 (**************************************************************)
 
+(*
 let rec pause n = if n > 0 then pause (n-1) 
 
 let rec sim n b t = 
@@ -66,6 +67,4 @@ let rec sim n b t =
 let _ = create "boo" 
         >> sim 8 9999999 
         |> Format.printf "%a" print 
-        (* |> List.iter (function ((Some s), t) -> Printf.printf "%s : %6.3f \n" s t
-                             | (None, t) -> Printf.printf "* : %6.3f \n" t)
-         *)
+*)
