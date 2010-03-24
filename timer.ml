@@ -24,31 +24,37 @@ open Misc.Ops
 
 type t = {
   name          : string; 
-  mutable events: (string option * float) list;
+  mutable events: (int * string option * float) list;
 }
 
 let get_time  = fun _ -> (Unix.times ()).Unix.tms_utime
 
 let create n = 
   { name = n; 
-    events = [(None, get_time())];
+    events = [(0, None, get_time())];
   }
 
-let log_event t so = 
-  t.events <- (so, get_time())::t.events 
-
-let to_events t = 
+let log_event t so =
   match t.events with
-  | []    -> assertf "impossible"
-  | x::xs -> Misc.mapfold_rev (fun (so', t') (so, t) -> ((so,t), (so', t' -. t))) x xs 
-             |> snd
+  | []         -> assertf "impossible" 
+  | (i,_,f)::_ -> t.events <- (i+1, so, get_time () -. f)::t.events
 
-let to_name t = t.name
+let to_events = fun t -> List.rev t.events
+let to_name   = fun t -> t.name
+
+let print_event ppf = function
+  | (i, Some s, f) -> Format.fprintf ppf "<%6d, %6.3f, %s>@\n" i f s
+  | (i, None  , f) -> Format.fprintf ppf "<%6d, %6.3f, *>@\n" i f
+
+let print ppf t = 
+  Format.fprintf ppf "Timer %s :: @[%a@] \n" 
+    t.name 
+    (Misc.pprint_many false "" print_event) (to_events t) 
 
 (**************************************************************)
 (*************** Unit Test ************************************)
 (**************************************************************)
-(*
+
 let rec pause n = if n > 0 then pause (n-1) 
 
 let rec sim n b t = 
@@ -59,7 +65,7 @@ let rec sim n b t =
 
 let _ = create "boo" 
         >> sim 8 9999999 
-        |> to_events
-        |> List.iter (function ((Some s), t) -> Printf.printf "%s : %6.3f \n" s t
+        |> Format.printf "%a" print 
+        (* |> List.iter (function ((Some s), t) -> Printf.printf "%s : %6.3f \n" s t
                              | (None, t) -> Printf.printf "* : %6.3f \n" t)
-*)
+         *)

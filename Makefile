@@ -22,5 +22,5 @@ all:
 clean:
 	rm -rf *.byte *.native _build _log
 
-#timer:
-#	ocamlbuild -r $(LIBS) $(IFLAGS) $(CFLAGS) timer.native
+timer:
+	ocamlbuild -r $(LIBS) $(IFLAGS) $(CFLAGS) timer.native

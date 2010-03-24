@@ -24,5 +24,6 @@
 type t
 val create   : string -> t
 val log_event: t -> string option -> unit
-val to_events: t -> (string option * float) list
+(* val to_events: t -> (string option * float) list *)
+val print    : Format.formatter -> t -> unit 
 
