@@ -24,27 +24,32 @@ open Misc.Ops
 
 type t = {
   name          : string; 
+  mutable last  : float;
   mutable events: (int * string option * float) list;
 }
 
 let get_time  = fun _ -> (Unix.times ()).Unix.tms_utime
 
 let create n = 
-  { name = n; 
-    events = [(0, None, get_time())];
+  let now = get_time () in
+  { name   = n; 
+    events = [(0, None, 0.0)];
+    last   = now;
   }
 
 let log_event t so =
   match t.events with
   | []         -> assertf "impossible" 
-  | (i,_,f)::_ -> t.events <- (i+1, so, get_time () -. f)::t.events
+  | (i,_,_)::_ -> let now = get_time () in
+                  t.events <- (i+1, so, now -. t.last)::t.events; 
+                  t.last   <- now 
 
 let to_events = fun t -> List.rev t.events
 let to_name   = fun t -> t.name
 
 let print_event ppf = function
   | (i, Some s, f) -> Format.fprintf ppf "<%6d, %6.3f, %s>@\n" i f s
-  | (i, None  , f) -> Format.fprintf ppf "<%6d, %6.3f, *>@\n" i f
+  | (i, None  , f) -> Format.fprintf ppf "<%6d, %6.3f, *>@\n"  i f
 
 let print ppf t = 
   Format.fprintf ppf "Timer %s :: @[%a@] \n" 
@@ -68,5 +73,4 @@ let c = try Sys.argv.(1) |> int_of_string with _ -> 2
 let _ = create "boo" 
         >> sim 8 c 9999999 
         |> Format.printf "%a" print 
-
 *)
