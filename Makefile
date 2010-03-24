@@ -8,8 +8,7 @@ IFLAGS=-lflags -I,$(CILHOME) \
 CFLAGS=-cflags -dtypes \
        -cflags -I,$(OCAMLGRAPHHOME)
 
-TARGETS=ops.cma ops.cmxa \
-	misc.cma misc.cmxa \
+TARGETS=misc.cma misc.cmxa \
 	bNstats.cma bNstats.cmxa \
 	timer.cma timer.cmxa \
 	constants.cma constants.cmxa \
@@ -18,10 +17,10 @@ TARGETS=ops.cma ops.cmxa \
 	errorline.cma errorline.cmxa
 
 all:
-	ocamlbuild -r $(LIBS) $(IFLAGS) $(CFLAGS) $(TARGETS)
+	ocamlbuild -r $(IFLAGS) $(CFLAGS) $(TARGETS)
 
 clean:
 	rm -rf *.byte *.native _build _log
 
-timer:
-	ocamlbuild -r $(LIBS) $(IFLAGS) $(CFLAGS) timer.native
+#timer:
+#	ocamlbuild -r $(LIBS) $(IFLAGS) $(CFLAGS) timer.native

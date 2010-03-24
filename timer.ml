@@ -20,7 +20,7 @@
  * TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  *)
 
-open Ops
+open Misc.Ops
 
 type t = {
   name          : string; 
@@ -48,7 +48,7 @@ let to_name t = t.name
 (**************************************************************)
 (*************** Unit Test ************************************)
 (**************************************************************)
-
+(*
 let rec pause n = if n > 0 then pause (n-1) 
 
 let rec sim n b t = 
@@ -62,3 +62,4 @@ let _ = create "boo"
         |> to_events
         |> List.iter (function ((Some s), t) -> Printf.printf "%s : %6.3f \n" s t
                              | (None, t) -> Printf.printf "* : %6.3f \n" t)
+*)
