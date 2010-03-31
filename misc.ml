@@ -41,6 +41,8 @@ module Ops = struct
 
   let (|>>) xo f = match xo with None -> None | Some x -> f x
 
+  let (|>:) xs f = List.map f xs
+
   let (+=) x n = x := !x + n; !x
 
   let (++) = List.rev_append 
