@@ -43,6 +43,6 @@ val reset : unit -> unit
     you can have a hierarchy of timings *)
 val time : string -> ('a -> 'b) -> 'a -> 'b 
 
-
 (** Print the current stats preceeded by a message *)
 val print : out_channel -> string -> unit
+

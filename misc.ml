@@ -30,66 +30,57 @@
  * This module provides some miscellaneous useful helper functions.
  *)
 
-(* Used without "Misc" prefix *)
 module Ops = struct
-  
-  let (|>) x f = f x
+let (|>) x f = f x
 
-  let (<|) f x = f x
+let (<|) f x = f x
 
-  let (>>) x f = f x; x
+let (>>) x f = f x; x
 
-  let (|>>) xo f = match xo with None -> None | Some x -> f x
+let (|>>) xo f = match xo with None -> None | Some x -> f x
 
-  let (|>:) xs f = List.map f xs
+let (|>:) xs f = List.map f xs
 
-  let (+=) x n = x := !x + n; !x
+let (+=) x n = x := !x + n; !x
 
-  let (++) = List.rev_append 
-  
-  let (+++)= fun (x1s, y1s) (x2s, y2s) -> (x1s ++ x2s, y1s ++ y2s)
-  
-  let id = fun x -> x
+let (++) = List.rev_append 
 
-  let un = fun x -> ()
+let (+++)= fun (x1s, y1s) (x2s, y2s) -> (x1s ++ x2s, y1s ++ y2s)
 
-  let (<.>) f g  = fun x -> x |> g |> f 
-  
-  let (<+>) f g  = fun x -> x |> f |> g 
-  
-  let failure fmt = 
-    Printf.ksprintf failwith fmt
+let id = fun x -> x
 
-  let asserti p fmt = 
-    Printf.ksprintf (fun x -> if not p then (print_string (x^"\n"); ignore(0/0)) else ()) fmt
-  
-  let asserts p fmt =
-    Printf.ksprintf (fun x -> if not p then failwith x) fmt
+let un = fun x -> ()
 
-  let assertf fmt =
-    Printf.ksprintf failwith fmt
+let (<.>) f g  = fun x -> x |> g |> f 
 
-  let halt _ =
-    assert false
+let (<+>) f g  = fun x -> x |> f |> g 
 
-  let fst3 (x,_,_) = x
-  let snd3 (_,x,_) = x
-  let thd3 (_,_,x) = x
+let failure fmt = 
+  Printf.ksprintf failwith fmt
 
-  let withfst3 (_,y,z) x = (x,y,z)
-  let withsnd3 (x,_,z) y = (x,y,z)
-  let withthd3 (x,y,_) z = (x,y,z)
+let asserti p fmt = 
+  Printf.ksprintf (fun x -> if not p then (print_string (x^"\n"); ignore(0/0)) else ()) fmt
 
+let asserts p fmt =
+  Printf.ksprintf (fun x -> if not p then failwith x) fmt
 
-  let print_now s = 
-    print_string s; 
-    flush stdout
+let assertf fmt =
+  Printf.ksprintf failwith fmt
 
-(*  
-  let pretty_string f x = 
-    Pretty.dprintf "%a" f x |> Pretty.sprint ~width:80 
-*)
+let halt _ =
+  assert false
 
+let fst3 (x,_,_) = x
+let snd3 (_,x,_) = x
+let thd3 (_,_,x) = x
+
+let withfst3 (_,y,z) x = (x,y,z)
+let withsnd3 (x,_,z) y = (x,y,z)
+let withthd3 (x,y,_) z = (x,y,z)
+
+let print_now s = 
+  print_string s; 
+  flush stdout
 end
 
 open Ops
@@ -269,10 +260,14 @@ let twrap s f x =
   let _  = Printf.printf "returned from %s \n" s in
   rv
 
-let mapfold f b xs =
-  List.fold_left begin
-    fun (acc, ys) x -> let (acc', y) = f acc x in (acc', y::ys)
+let mapfold_rev f b xs = 
+  List.fold_left begin fun (acc, ys) x -> 
+    let (acc', y) = f acc x in 
+    (acc', y::ys)
   end (b, []) xs
+
+let mapfold f b xs =
+  mapfold_rev f b xs 
   |> app_snd List.rev 
 
 let filter f xs = 
