@@ -668,10 +668,9 @@ let tflap3 (e1, e2, e3) f =
 
 let rec expand f xs ys =
   match xs with
-  | [] -> ys
-  | x::xs ->
-      let (xs',ys') = f x in
-      expand f (List.rev_append xs' xs) (List.rev_append ys' ys)
+  | []    -> ys
+  | x::xs -> let (xs', ys') = f x in
+             expand f (xs' ++  xs) (ys' ++ ys)
 
 let rec get_first f = function
   | x::xs when f x -> Some x 
