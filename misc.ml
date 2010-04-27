@@ -227,8 +227,7 @@ let getf a i fmt =
 
 let do_catchf s f x =
   try f x with ex -> 
-     (Printf.printf "%s hits exn: %s \n" s (Printexc.to_string ex); 
-      assert false)
+    assertf "%s hits exn: %s \n" s (Printexc.to_string ex)
 
 let do_catch s f x =
   try f x with ex -> 
