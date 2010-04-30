@@ -510,8 +510,8 @@ let only_one s = function
   | [] -> None
 
 let maybe_one = function
-    [x] -> Some x
-  | _ -> None
+  | [x] -> Some x
+  | _   -> None
 
 
 (*****************************************************************)
@@ -564,6 +564,10 @@ let get_unique =
 
 let flip f x y =
   f y x
+
+let maybe_fold f b xs = 
+  let fo = fun bo x -> match bo with Some b -> f b x | _ -> None in
+  List.fold_left fo (Some b) xs
 
 let maybe_map f = function Some x -> Some (f x) | None -> None
 
