@@ -26,7 +26,5 @@ def map (threadcount, f, xs):
     for worker in workers:
         worker.start ()
     q.join ()
-    for worker in workers:
-        worker.die = True
 
     return it.chain (*[worker.results for worker in workers])
