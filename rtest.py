@@ -3,30 +3,41 @@ import pmap
 import itertools as it
 
 class TestConfig:
-    def __init__ (self, testdirs, threadcount = 1):
-        self.threadcount = threadcount
+    def __init__ (self, testdirs, logfile = None, threadcount = 1):
         self.testdirs    = testdirs
+        self.logfile     = logfile
+        self.threadcount = threadcount
 
     def is_test (self, file):
         pass
 
-    def run_test (file):
+    def run_test (self, file):
         pass
+
+    def log_test (self, file, runtime, ok):
+        if self.logfile == None:
+            return
+
+        f = open(self.logfile, "a")
+        f.write("test: %s\ntime: %f seconds\nresult: %s\n\n" % (file, runtime, ok))
+        f.close
 
 class TestRunner:
     def __init__ (self, config):
         self.config = config
 
     def run_test (self, (file, expected_status)):
-        start  = time.time ()
-        status = self.config.run_test (file)
-        print "%f seconds" % (time.time () - start)
+        start   = time.time ()
+        status  = self.config.run_test (file)
+        runtime = time.time () - start
+        print "%f seconds" % (runtime)
 
         ok = (status == expected_status)
         if ok:
             print "\033[1;32mSUCCESS!\033[1;0m (%s)\n" % (file)
         else:
             print "\033[1;31mFAILURE :(\033[1;0m (%s) \n" % (file)
+        self.config.log_test (file, runtime, ok)
         return (file, ok)
 
     def run_tests (self, tests):
