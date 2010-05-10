@@ -2,15 +2,24 @@ import time, os, os.path
 import pmap
 import itertools as it
 
-class TestRunner:
-    def __init__ (self, runtest, istest, threadcount = 1):
-        self.runtest     = runtest
-        self.istest      = istest
+class TestConfig:
+    def __init__ (self, testdirs, threadcount = 1):
         self.threadcount = threadcount
+        self.testdirs    = testdirs
+
+    def is_test (self, file):
+        pass
+
+    def run_test (file):
+        pass
+
+class TestRunner:
+    def __init__ (self, config):
+        self.config = config
 
     def run_test (self, (file, expected_status)):
         start  = time.time ()
-        status = self.runtest (file)
+        status = self.config.run_test (file)
         print "%f seconds" % (time.time () - start)
 
         ok = (status == expected_status)
@@ -20,8 +29,8 @@ class TestRunner:
             print "\033[1;31mFAILURE :(\033[1;0m (%s) \n" % (file)
         return (file, ok)
 
-    def run (self, tests):
-        results   = pmap.map (self.threadcount, self.run_test, tests)
+    def run_tests (self, tests):
+        results   = pmap.map (self.config.threadcount, self.run_test, tests)
         failed    = [result[0] for result in results if result[1] == False]
         failcount = len(failed)
         if failcount == 0:
@@ -31,7 +40,7 @@ class TestRunner:
         return (failcount != 0)
 
     def directory_tests (self, dir, expected_status):
-        return it.chain(*[[(os.path.join (dir, file), expected_status) for file in files if self.istest (file)] for dir, dirs, files in os.walk(dir)])
+        return it.chain(*[[(os.path.join (dir, file), expected_status) for file in files if self.config.is_test (file)] for dir, dirs, files in os.walk(dir)])
 
-    def run_directories (self, testdirs):
-        return self.run (it.chain (*[self.directory_tests (dir, expected_status) for dir, expected_status in testdirs]))
+    def run (self):
+        return self.run_tests (it.chain (*[self.directory_tests (dir, expected_status) for dir, expected_status in self.config.testdirs]))
