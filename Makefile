@@ -2,8 +2,7 @@ include ../../config.make
 
 LIBS=-libs unix,str
 
-IFLAGS=-lflags -I,$(CILHOME) \
-       -lflags -I,$(OCAMLGRAPHHOME) 
+IFLAGS=-lflags -I,$(OCAMLGRAPHHOME) 
 
 CFLAGS=-cflags -dtypes \
        -cflags -I,$(OCAMLGRAPHHOME)
