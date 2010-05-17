@@ -553,10 +553,16 @@ let append_to_file f s =
   ignore (Unix.write oc s 0 ((String.length s)-1) ); 
   Unix.close oc
 
+let with_out_file file f =
+  let oc = open_out file in
+    f oc;
+    close_out oc
+
 let write_to_file f s =
-  let oc = open_out f in
-  output_string oc s; 
-  close_out oc
+  with_out_file f (fun oc -> output_string oc s)
+
+let with_out_formatter file f =
+  with_out_file file (fun oc -> f (Format.formatter_of_out_channel oc))
 
 let get_unique =
   let cnt = ref 0 in
