@@ -225,6 +225,9 @@ let list_max x xs =
 let getf a i fmt = 
   try a.(i) with ex -> assertf fmt
 
+let do_catchu f x g =
+  try f x with ex -> (g ex; raise ex)
+
 let do_catchf s f x =
   try f x with ex -> 
     assertf "%s hits exn: %s \n" s (Printexc.to_string ex)
