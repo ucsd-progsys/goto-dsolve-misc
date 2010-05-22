@@ -252,6 +252,8 @@ let app_snd3   = fun f (a, b, c)    -> (a, f b, c)
 let app_thd3   = fun f (a, b, c)    -> (a, b, f c)
 let pad_snd    = fun f x            -> (x, f x)
 let pad_fst    = fun f y            -> (f y, y)
+let tmap2      = fun (f, g) x       -> (f x, g x)
+let tmap3      = fun (f, g, h) x    -> (f x, g x, h x)
 
 let twrap s f x =
   let _  = Printf.printf "calling %s \n" s in
@@ -421,11 +423,14 @@ let sm_adds k v sm =
 
 let sm_bindings sm =
   StringMap.fold (fun k v acc -> (k,v) :: acc) sm []
-  
+ 
 let intmap_bindings im =
   IntMap.fold (fun k v acc -> (k,v) :: acc) im []
 
-let rec intmap_for_all f m =
+let intmap_filter f im =
+  IntMap.fold (fun k v im -> if f k v then IntMap.add k v im else im) im IntMap.empty 
+
+let intmap_for_all f m =
   try 
     IntMap.iter (fun i v -> if not (f i v) then raise FalseException) m;
     true
