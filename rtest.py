@@ -8,6 +8,10 @@ class TestConfig:
         self.logfile     = logfile
         self.threadcount = threadcount
 
+        f = open(logfile, "a")
+	f.write("test, time(s), result \n")
+	f.close()
+
     def is_test (self, file):
         pass
 
@@ -19,9 +23,10 @@ class TestConfig:
             return
 
         f = open(self.logfile, "a")
-        f.write("test: %s\ntime: %f seconds\nresult: %s\n\n" % (file, runtime, ok))
-        f.close
-
+        #f.write("test: %s\ntime: %f seconds\nresult: %s\n\n" % (file, runtime, ok))
+        f.write("%s, %f, %s \n" % (file, runtime, ok))
+	f.close()
+  
 class TestRunner:
     def __init__ (self, config):
         self.config = config
@@ -37,7 +42,7 @@ class TestRunner:
             print "\033[1;32mSUCCESS!\033[1;0m (%s)\n" % (file)
         else:
             print "\033[1;31mFAILURE :(\033[1;0m (%s) \n" % (file)
-        self.config.log_test (file, runtime, ok)
+        self.config.log_test(file, runtime, ok)
         return (file, ok)
 
     def run_tests (self, tests):
