@@ -162,11 +162,16 @@ let sm_of_list kvs =
 let sm_to_list sm = 
   StringMap.fold (fun k v acc -> (k,v)::acc) sm [] 
 
+let sm_to_range sm = 
+  sm |> sm_to_list |> List.map snd
+
 let sm_print_keys name sm =
   sm |> sm_to_list 
      |> List.map fst 
      |> String.concat ", "
      |> Printf.printf "%s : %s \n" name
+
+
 
 let foldn f n b = 
   let rec foo acc i = 
