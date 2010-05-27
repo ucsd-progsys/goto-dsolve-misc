@@ -14,8 +14,7 @@ TARGETS=misc.cma misc.cmxa \
 	constants.cma constants.cmxa \
 	fcommon.cma fcommon.cmxa \
 	heaps.cma heaps.cmxa \
-	errorline.cma errorline.cmxa \
-	z3dummy.cma z3dummy.cmxa
+	errorline.cma errorline.cmxa # z3dummy.cma z3dummy.cmxa
 
 all:
 	ocamlbuild -r $(IFLAGS) $(CFLAGS) $(TARGETS)
