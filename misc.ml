@@ -651,6 +651,14 @@ let split4 lst =
 let combine3 xs ys zs =
   map3 (fun x y z -> (x, y, z)) xs ys zs
 
+let tr_partition f xs =
+  List.fold_left begin fun (xs,ys) z -> 
+    if f z 
+    then (z::xs, ys) 
+    else (xs, z::ys)
+  end ([],[]) xs
+
+
 (* these do odd things with order for performance 
  * it is possible that fast is a misnomer *)
 let fast_flatten xs =
