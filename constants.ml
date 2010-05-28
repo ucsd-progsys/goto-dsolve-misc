@@ -50,7 +50,7 @@ let root                        = ref ""    (* root function *)
 let true_unconstrained          = ref true  (* -true_unconstrained *)
 let do_nothing                  = ref false (* -nop *)
 let dump_imp                    = ref false (* -imp *)
-let dump_simp                   = ref false (* -simp *)
+let dump_simp                   = ref ""    (* -simp *)
 let prune_live                  = ref false (* -prunelive *)
 
 (* JHALA: what do these do ? *)
@@ -240,8 +240,8 @@ let arg_spec =
     Arg.Set prune_live,
     "Restrict liquid types to live variables (experimental)");
    ("-simp",
-    Arg.Set dump_simp,
-    "print simplified constraints to save-file (experimental)");
+    Arg.String ((:=) dump_simp),
+    "print simplified constraints to save-file (experimental) use [andrey] or [jhala] ");
   ]
 
 

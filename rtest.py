@@ -9,7 +9,7 @@ class TestConfig:
         self.threadcount = threadcount
 
         f = open(logfile, "a")
-	f.write("test \t\t\t time(s) \t\t\t result \n")
+	f.write("test, time(s), result \n")
 	f.close()
 
     def is_test (self, file):
@@ -24,7 +24,7 @@ class TestConfig:
 
         f = open(self.logfile, "a")
         #f.write("test: %s\ntime: %f seconds\nresult: %s\n\n" % (file, runtime, ok))
-        f.write("%s \t\t\t\t\t%f \t %s \n" % (file, runtime, ok))
+        f.write("%s, %f, %s \n" % (file, runtime, ok))
 	f.close()
   
 class TestRunner:

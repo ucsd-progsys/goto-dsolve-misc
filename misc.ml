@@ -162,11 +162,16 @@ let sm_of_list kvs =
 let sm_to_list sm = 
   StringMap.fold (fun k v acc -> (k,v)::acc) sm [] 
 
+let sm_to_range sm = 
+  sm |> sm_to_list |> List.map snd
+
 let sm_print_keys name sm =
   sm |> sm_to_list 
      |> List.map fst 
      |> String.concat ", "
      |> Printf.printf "%s : %s \n" name
+
+
 
 let foldn f n b = 
   let rec foo acc i = 
@@ -225,6 +230,9 @@ let list_max x xs =
 let getf a i fmt = 
   try a.(i) with ex -> assertf fmt
 
+let do_catchu f x g =
+  try f x with ex -> (g ex; raise ex)
+
 let do_catchf s f x =
   try f x with ex -> 
     assertf "%s hits exn: %s \n" s (Printexc.to_string ex)
@@ -252,6 +260,8 @@ let app_snd3   = fun f (a, b, c)    -> (a, f b, c)
 let app_thd3   = fun f (a, b, c)    -> (a, b, f c)
 let pad_snd    = fun f x            -> (x, f x)
 let pad_fst    = fun f y            -> (f y, y)
+let tmap2      = fun (f, g) x       -> (f x, g x)
+let tmap3      = fun (f, g, h) x    -> (f x, g x, h x)
 
 let twrap s f x =
   let _  = Printf.printf "calling %s \n" s in
@@ -421,11 +431,14 @@ let sm_adds k v sm =
 
 let sm_bindings sm =
   StringMap.fold (fun k v acc -> (k,v) :: acc) sm []
-  
+ 
 let intmap_bindings im =
   IntMap.fold (fun k v acc -> (k,v) :: acc) im []
 
-let rec intmap_for_all f m =
+let intmap_filter f im =
+  IntMap.fold (fun k v im -> if f k v then IntMap.add k v im else im) im IntMap.empty 
+
+let intmap_for_all f m =
   try 
     IntMap.iter (fun i v -> if not (f i v) then raise FalseException) m;
     true
@@ -637,6 +650,14 @@ let split4 lst =
 
 let combine3 xs ys zs =
   map3 (fun x y z -> (x, y, z)) xs ys zs
+
+let tr_partition f xs =
+  List.fold_left begin fun (xs,ys) z -> 
+    if f z 
+    then (z::xs, ys) 
+    else (xs, z::ys)
+  end ([],[]) xs
+
 
 (* these do odd things with order for performance 
  * it is possible that fast is a misnomer *)
