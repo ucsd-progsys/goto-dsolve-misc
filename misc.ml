@@ -802,8 +802,8 @@ let transpose x_iys_s =
   end x_iys_s; 
   hashtbl_keys t |> List.map (fun i -> (i, Hashtbl.find_all t i))
 
-
-
+let basename_no_extension fname =
+  fname |> Filename.basename |> Filename.chop_extension
 
 let absolute_name name =
   if not (Filename.is_relative name) then name else
