@@ -837,4 +837,6 @@ let absolute_name name =
     let _    = Sys.chdir dir in
     rv
 
+let cardinality = fun xs -> xs |> sort_and_compact |> List.length
+let disjoint    = fun xs ys -> cardinality xs + cardinality ys = cardinality (xs ++ ys)
 
