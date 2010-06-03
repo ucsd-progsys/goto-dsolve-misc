@@ -90,8 +90,10 @@ let choose b f g = if b then f else g
 let liftfst2 (f: 'a -> 'a -> 'b) (x: 'a * 'c) (y: 'a * 'c): 'b =
   f (fst x) (fst y)
 
-let curry f   = fun x y -> f (x,y)
-let uncurry f = fun (x,y) -> f x y
+let curry   = fun f x y   -> f (x,y)
+let uncurry = fun f (x,y) -> f x y
+let switch  = fun f x y   -> f y x
+
 
 module type KeyValType =
   sig
