@@ -92,7 +92,6 @@ let liftfst2 (f: 'a -> 'a -> 'b) (x: 'a * 'c) (y: 'a * 'c): 'b =
 
 let curry f   = fun x y -> f (x,y)
 let uncurry f = fun (x,y) -> f x y
-let switch = fun f x y -> f y x
 
 module type KeyValType =
   sig
@@ -455,8 +454,7 @@ let clone x n =
 let distinct xs = 
   List.length (sort_and_compact xs) = List.length xs
 
-let flip f x y =
-  f y x
+let flip f x y = f y x
 
 let trunc i j = 
   let (ai,aj) = (abs i, abs j) in
