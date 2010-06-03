@@ -456,8 +456,7 @@ let clone x n =
 let distinct xs = 
   List.length (sort_and_compact xs) = List.length xs
 
-let flip f x y =
-  f y x
+let flip f x y = f y x
 
 let trunc i j = 
   let (ai,aj) = (abs i, abs j) in
