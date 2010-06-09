@@ -35,9 +35,9 @@ let dump_ref_constraints= ref false            (* -drconstr *)
 let ctypes_only         = ref false            (* -ctypes *)
 let ol_default          = 2
 let verbose_level       = ref ol_default       (* -v *)
-let latex_file: string option ref = ref None   (* translate to LaTeX file *)
-let armc_file: string option ref  = ref None   (* translate to ARMC file *)
-let cfg_armc_file: string option ref  = ref None   (* translate to ARMC file with CFG *)
+let latex_file: string option ref = ref None   (* translate to LaTeX *)
+let armc_file: string option ref  = ref None   (* translate to ARMC *)
+let horn_file: string option ref  = ref None   (* translate to Horn clauses *)
 let q_armc_file: string option ref = ref None   (* translate to Q'ARMC file *)
 let hc_armc_file: string option ref = ref None   (* translate to HC'ARMC file *)
 let dot_file: string option ref = ref None   (* translate to dot file *)
@@ -183,14 +183,14 @@ let arg_spec =
 		      armc_file := Some s),
     "translate constraints to ARMC file"
    );
-   ("-cfg-armc", 
+   ("-horn", 
     Arg.String (fun s -> 
 		  let l = String.length s in
 		    if l = 0 then
-		      print_endline "-cfg-armc: invalid parameter"
+		      print_endline "-rules: invalid parameter"
 		    else
-		      cfg_armc_file := Some s),
-    "translate constraints to ARMC file with CFG"
+		      horn_file := Some s),
+    "translate constraints to Horn clauses"
    );
    ("-qarmc", 
     Arg.String (fun s -> 
