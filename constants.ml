@@ -38,8 +38,7 @@ let verbose_level       = ref ol_default       (* -v *)
 let latex_file: string option ref = ref None   (* translate to LaTeX *)
 let armc_file: string option ref  = ref None   (* translate to ARMC *)
 let horn_file: string option ref  = ref None   (* translate to Horn clauses *)
-let q_armc_file: string option ref = ref None   (* translate to Q'ARMC file *)
-let hc_armc_file: string option ref = ref None   (* translate to HC'ARMC file *)
+let q_armc_file: string option ref = ref None   (* OBSOLETE translate to Q'ARMC file *)
 let dot_file: string option ref = ref None   (* translate to dot file *)
 let purify_function_application = ref true  (* replace fun-terms by existentially quantified variables *)
 let ptag                        = ref true  (* -ptag *)
@@ -200,15 +199,6 @@ let arg_spec =
 		    else
 		      q_armc_file := Some s),
     "translate constraints to Q'ARMC file"
-   );
-   ("-hcarmc", 
-    Arg.String (fun s -> 
-		  let l = String.length s in
-		    if l = 0 then
-		      print_endline "-hcarmc: invalid parameter"
-		    else
-		      hc_armc_file := Some s),
-    "translate constraints to HC'ARMC file"
    );
    ("-dot", 
     Arg.String (fun s -> 
