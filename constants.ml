@@ -215,11 +215,12 @@ let arg_spec =
    );
    ("-no-simplify-t", 
     Arg.Clear simplify_t,
-    "do not simplify and prune vacuously satisfiable FixConstraint.fit"
+    "do not simplify constraints"
    );
    ("-libpath",
     Arg.String (fun s -> lib_path := s), 
-    ("library path for default spec, quals ["^(!lib_path)^"]"));
+    ("library path for default spec, quals ["^(!lib_path)^"]")
+   );
    ("-nop",
     Arg.Set do_nothing,
     "do nothing (useful for regression tests known to be broken)");
