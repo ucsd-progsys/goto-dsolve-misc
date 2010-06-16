@@ -1,12 +1,12 @@
 #!/bin/bash
-cmd="../../dsolve.py -fix "
+cmd="../../dsolve.py -fix -no-simplify-t "
 out="log"
 
 rm $out
 for i in *.ml 
 do
   cmdi=$cmd$i
-  echo $cmd
+  echo $cmdi
   $cmdi >> $out 
 done
 
