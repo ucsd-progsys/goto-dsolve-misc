@@ -51,6 +51,7 @@ let do_nothing                  = ref false (* -nop *)
 let dump_imp                    = ref false (* -imp *)
 let dump_simp                   = ref ""    (* -simp *)
 let prune_live                  = ref false (* -prunelive *)
+let print_nontriv               = ref false (* -print_nontriv *)
 
 (* JHALA: what do these do ? *)
 let psimple       = ref true            (* -psimple *)
@@ -223,16 +224,24 @@ let arg_spec =
    );
    ("-nop",
     Arg.Set do_nothing,
-    "do nothing (useful for regression tests known to be broken)");
+    "do nothing (useful for regression tests known to be broken)";
+   );
    ("-imp",
     Arg.Set dump_imp,
-    "print constraints as IMP program (experimental)");
+    "print constraints as IMP program (experimental)"
+   );
    ("-prunelive",
     Arg.Set prune_live,
-    "Restrict liquid types to live variables (experimental)");
+    "Restrict liquid types to live variables (experimental)"
+   ); 
    ("-simp",
     Arg.String ((:=) dump_simp),
-    "print simplified constraints to save-file (experimental) use [andrey] or [jhala] ");
+    "print simplified constraints to save-file (experimental) use [andrey] or [jhala] "
+   );
+   ("-print-nontriv",
+    Arg.Set (print_nontriv),
+    "print non-trivial bindings in each environment [false]"
+   );
   ]
 
 
