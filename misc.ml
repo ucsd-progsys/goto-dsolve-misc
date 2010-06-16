@@ -252,6 +252,13 @@ let do_memo memo f args key =
     let _ = Hashtbl.replace memo key rv in
     rv
 
+let do_bimemo fmemo rmemo f args key =
+  try Hashtbl.find fmemo key with Not_found ->
+    let rv = f args in
+    let _ = Hashtbl.replace fmemo key rv in
+    let _ = Hashtbl.replace rmemo rv key in
+    rv
+
 let map_pair   = fun f (x1, x2)     -> (f x1, f x2)
 let map_triple = fun f (x1, x2, x3) -> (f x1, f x2, f x3)
 let app_fst    = fun f (a, b)       -> (f a, b)
@@ -516,15 +523,22 @@ let rec same_length l1 l2 = match l1, l2 with
   | _ :: xs, _ :: ys -> same_length xs ys
   | _                -> false
 
+let ex_one s = function
+  | [x]    -> x
+  | _ :: _ -> failwith s
+  | _      -> failwith (s ^ ". empty")
+
 let only_one s = function
     x :: [] -> Some x
-  | x :: xs -> failwith s
-  | [] -> None
+  | _ :: _  -> failwith s
+  | []      -> None
 
 let maybe_one = function
   | [x] -> Some x
   | _   -> None
 
+
+let int_of_bool b = if b then 1 else 0
 
 (*****************************************************************)
 (******************** Mem Management *****************************)
@@ -623,7 +637,7 @@ let rec map3 f xs ys zs = match (xs, ys, zs) with
   | _ -> assert false
 
 let zip_partition xs bs =
-  let (xbs,xbs') = List.partition snd (List.combine xs bs) in
+  let (xbs, xbs') = List.partition snd (List.combine xs bs) in
   (List.map fst xbs, List.map fst xbs')
 
 let rec perms es =
