@@ -44,7 +44,7 @@ let purify_function_application = ref true  (* replace fun-terms by existentiall
 let ptag                        = ref true  (* -ptag *)
 let genspec                     = ref false (* -genspec *)
 let typespec                    = ref false (* -typespec *)
-let simplify_t                  = ref true  (* simplify and prune vacuous FixConstraint.t constraints *)
+let simplify_t                  = ref false (* simplify and prune vacuous FixConstraint.t constraints *)
 let root                        = ref ""    (* root function *)
 let true_unconstrained          = ref true  (* -true_unconstrained *)
 let do_nothing                  = ref false (* -nop *)
@@ -155,7 +155,7 @@ let arg_spec =
     "dump constraints SCC to constraints.dot [false]");
    ("-notruekvars",
     Arg.Clear true_unconstrained,
-    "true unconstrained kvars [true]");
+    "don't true unconstrained kvars [true]");
    ("-v", Arg.Int (fun c -> verbose_level := c), 
               "<level> Set degree of analyzer verbosity:\n\
                \032    0      No output\n\
