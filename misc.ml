@@ -407,7 +407,11 @@ let chop_star chopper s =
 let bounded_chop s chopper i = Str.bounded_split (Str.regexp chopper) s i 
 
 let is_prefix p s = 
-  Str.string_match (Str.regexp p) s 0
+  let (ls, lp) = (String.length s, String.length p) in
+  if ls < lp
+    then false
+  else
+    (String.sub s 0 lp) = p
 
 let is_substring s subs = 
   let reg = Str.regexp subs in
@@ -491,10 +495,6 @@ let fixpoint f x =
     let x', b' = f x in
     if b' then acf true x' else (x', b) in
   acf false x
-
-let is_prefix p s = 
-  let reg = Str.regexp p in
-  Str.string_match reg s 0
 
 let rec pprint_many_box s f ppf = function
   | []     -> ()
