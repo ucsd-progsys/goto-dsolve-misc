@@ -1,5 +1,5 @@
 #!/bin/bash
-cmd="../../dsolve.py -fix -no-simplify-t "
+cmd="../../dsolve.py -fix "
 out="log"
 
 rm $out
