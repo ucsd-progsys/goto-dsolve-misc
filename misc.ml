@@ -510,11 +510,17 @@ let rec pprint_many brk s f ppf = function
                 else Format.fprintf ppf "%a%s" f x s); 
                 pprint_many brk s f ppf xs')
 
+let pprint_int_o ppf = function
+  | None -> Format.fprintf ppf "None" 
+  | Some d -> Format.fprintf ppf "Some(%d)" d
+
 let pprint_str ppf s =
   Format.fprintf ppf "%s" s
 
 let pprint_ints ppf is = 
   pprint_many_box ";" (fun ppf i -> Format.fprintf ppf "%d" i) ppf is
+
+
 
 let fsprintf f p = 
   Format.fprintf Format.str_formatter "@[%a@]" f p;
