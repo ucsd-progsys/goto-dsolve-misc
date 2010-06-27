@@ -4,7 +4,7 @@
 #cmd="../../main.native -simp jhala "
 
 #runs solver on each query file
-cmd="~/research/dsolve/external/fixpoint/main.native " 
+cmd="../../main.native -simplify-t " 
 out="log"
 
 if [ $1 ]; then	
