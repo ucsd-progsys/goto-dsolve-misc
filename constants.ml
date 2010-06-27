@@ -218,6 +218,10 @@ let arg_spec =
     Arg.Clear simplify_t,
     "do not simplify constraints"
    );
+   ("-simplify-t", 
+    Arg.Set simplify_t,
+    "simplify constraints"
+   );
    ("-libpath",
     Arg.String (fun s -> lib_path := s), 
     ("library path for default spec, quals ["^(!lib_path)^"]")

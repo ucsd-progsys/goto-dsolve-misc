@@ -4,9 +4,12 @@
 #cmd="../../main.native -simp jhala "
 
 #runs solver on each query file
-cmd="../../main.native " 
-
+cmd="~/research/dsolve/external/fixpoint/main.native " 
 out="log"
+
+if [ $1 ]; then	
+  cmd=$1
+fi
 
 rm $out
 for i in *.in.fq 
