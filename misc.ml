@@ -230,6 +230,10 @@ let list_reduce f = function
 let list_max x xs = 
   List.fold_left max x xs
 
+let rec take_max n = function
+  | x :: xs when n > 0 -> x :: take_max (n - 1) xs
+  | _                  -> []
+
 let getf a i fmt = 
   try a.(i) with ex -> assertf fmt
 
