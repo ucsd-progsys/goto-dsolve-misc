@@ -425,6 +425,9 @@ let is_substring s subs =
   try ignore(Str.search_forward reg s 0); true
   with Not_found -> false
 
+let replace_substring src dst s =
+  Str.global_replace (Str.regexp src) dst s
+
 let is_suffix suffix s = 
   let k = String.length suffix
   and n = String.length s in
