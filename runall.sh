@@ -4,7 +4,8 @@
 #cmd="../../main.native -simp jhala "
 
 #runs solver on each query file
-cmd="../../main.native -simplify-t " 
+#cmd="../../main.native -simplify-t " 
+cmd="../../hornToInterproc.native "
 out="log"
 
 if [ $1 ]; then	
@@ -12,7 +13,7 @@ if [ $1 ]; then
 fi
 
 rm $out
-for i in *.in.fq 
+for i in *.pl
 do
   cmdi=$cmd$i
   echo $cmdi

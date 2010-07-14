@@ -174,8 +174,6 @@ let sm_print_keys name sm =
      |> String.concat ", "
      |> Printf.printf "%s : %s \n" name
 
-
-
 let foldn f n b = 
   let rec foo acc i = 
     if i >= n then acc else foo (f acc i) (i+1) 
@@ -618,6 +616,27 @@ let maybe_iter f = function Some x -> f x | None -> ()
 
 let maybe = function Some x -> x | _ -> assertf "maybe called with None" 
 
+let lines_of_file filename = 
+  let lines = ref [] in
+  let chan = open_in filename in
+  try 
+    while true; do
+      lines := input_line chan :: !lines
+    done; [] 
+  with End_of_file ->
+    close_in chan;
+    List.rev !lines
+
+let map_lines_of_file infile outfile f =
+  let ic = open_in infile in
+  let oc = open_out outfile in
+  try
+    while true; do
+      ic |> input_line |> f |> output_string oc
+    done;
+  with End_of_file -> 
+    (close_in ic; close_out oc)
+
 let maybe_cons m xs = match m with
   | None -> xs
   | Some x -> x :: xs
@@ -742,7 +761,7 @@ let join f xs ys =
   let ys' = List.map (fun y -> (f y, y)) ys |> List.sort compare in
   fuse [] xs' ys'
 
-let groupby (f: 'a -> 'b) (xs: 'a list): 'a list list =
+let kgroupby (f: 'a -> 'b) (xs: 'a list): ('b * 'a list) list =
   let t        = Hashtbl.create 17 in
   let lookup x = try Hashtbl.find t x with Not_found -> [] in
   (* build table *)
@@ -750,8 +769,10 @@ let groupby (f: 'a -> 'b) (xs: 'a list): 'a list list =
     Hashtbl.replace t (f x) (x :: lookup (f x))
   end xs;
   (* build cluster *)
-  Hashtbl.fold (fun _ xs xxs -> xs :: xxs) t []
-  |> List.map List.rev 
+  Hashtbl.fold (fun k xs xxs -> (k, xs) :: xxs) t []
+
+let groupby (f: 'a -> 'b) (xs: 'a list): 'a list list =
+  kgroupby f xs |> List.map (snd <+> List.rev)
 
 let exists_pair (f: 'a -> 'a -> bool) (xs: 'a list): bool =
   fst (List.fold_left (fun (b, ys) x -> (b || List.exists (f x) ys, x :: ys)) (false, []) xs)
