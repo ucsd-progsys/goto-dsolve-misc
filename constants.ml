@@ -25,7 +25,7 @@ open Misc.Ops
 (******* This module contains globals representing "flags" **************)
 let annotsep_name       = "\n\n=+=\n\n"
 let global_name         = "GLOBAL"
-let lib_path            = Sys.executable_name |> Filename.dirname |> ref
+let lib_path            = Sys.argv.(0) |> Filename.dirname |> ref
 
 let file: string option ref = ref None         (* last commandline param*)
 let safe                = ref false            (* -safe *)
