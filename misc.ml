@@ -831,6 +831,11 @@ let array_fold_lefti f acc a =
 let array_map2 f xa ya = 
   Array.mapi (fun i x -> f x (ya.(i))) xa
 
+let array_rev_iteri f a =
+  for i = Array.length a - 1 downto 0 do
+    f i a.(i)
+  done
+
 exception NotForall
 
 let array_forall f a =
