@@ -210,7 +210,7 @@ let map_partial f xs =
   List.rev 
     (List.fold_left 
       (fun acc x -> 
-        match f x with 
+        match f x with
         | None   -> acc
         | Some z -> (z::acc)) [] xs)
 
