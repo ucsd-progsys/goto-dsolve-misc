@@ -81,7 +81,7 @@ let withsnd3 (x,_,z) y = (x,y,z)
 let withthd3 (x,y,_) z = (x,y,z)
 
 let print_now s = 
-  print_string s; 
+  print_string s;
   flush stdout
 end
 
