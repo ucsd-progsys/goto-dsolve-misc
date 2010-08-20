@@ -680,6 +680,11 @@ let rec fold_right3 f xs ys zs acc = match xs, ys, zs with
   | [], [], []                -> acc
   | _                         -> assert false
 
+let rec fold_left3 f acc xs ys zs = match xs, ys, zs with
+  | x :: xs, y :: ys, z :: zs -> fold_left3 f (f acc x y z) xs ys zs
+  | [], [], []                -> acc
+  | _                         -> assert false
+
 let zip_partition xs bs =
   let (xbs, xbs') = List.partition snd (List.combine xs bs) in
   (List.map fst xbs, List.map fst xbs')
