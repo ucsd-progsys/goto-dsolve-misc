@@ -76,6 +76,11 @@ let fst3 (x,_,_) = x
 let snd3 (_,x,_) = x
 let thd3 (_,_,x) = x
 
+let fst4 (x, _, _, _) = x
+let snd4 (_, x, _, _) = x
+let thd4 (_, _, x, _) = x
+let fth4 (_, _, _, x) = x
+
 let withfst3 (_,y,z) x = (x,y,z)
 let withsnd3 (x,_,z) y = (x,y,z)
 let withthd3 (x,y,_) z = (x,y,z)
