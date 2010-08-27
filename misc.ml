@@ -282,6 +282,12 @@ let tmap3      = fun (f, g, h) x    -> (f x, g x, h x)
 let iter_fst   = fun f (a, b)       -> f a
 let iter_snd   = fun f (a, b)       -> f b
 
+let split3 lst =
+  List.fold_right (fun (x, y, z) (xs, ys, zs) -> (x :: xs, y :: ys, z :: zs)) lst ([], [], [])
+
+let split4 lst =
+  List.fold_right (fun (w, x, y, z) (ws, xs, ys, zs) -> (w :: ws, x :: xs, y :: ys, z :: zs)) lst ([], [], [], [])
+
 let twrap s f x =
   let _  = Printf.printf "calling %s \n" s in
   let rv = f x in
@@ -324,6 +330,10 @@ let flatsingles xss =
 let splitflatten xsyss = 
   let xss, yss = List.split xsyss in
   (flatten xss, flatten yss)
+
+let splitflatten3 xsyszss =
+  let xss, yss, zss = split3 xsyszss in
+    (flatten xss, flatten yss, flatten zss)
 
 let flap f xs =
   xs |> List.rev_map f |> flatten |> List.rev
@@ -708,12 +718,6 @@ let flap2 f xs ys =
 
 let flap3 f xs ys zs =
   List.flatten (map3 f xs ys zs)
-
-let split3 lst =
-  List.fold_right (fun (x, y, z) (xs, ys, zs) -> (x :: xs, y :: ys, z :: zs)) lst ([], [], [])
-
-let split4 lst =
-  List.fold_right (fun (w, x, y, z) (ws, xs, ys, zs) -> (w :: ws, x :: xs, y :: ys, z :: zs)) lst ([], [], [], [])
 
 let combine3 xs ys zs =
   map3 (fun x y z -> (x, y, z)) xs ys zs
