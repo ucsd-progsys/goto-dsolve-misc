@@ -88,6 +88,9 @@ let withthd3 (x,y,_) z = (x,y,z)
 let print_now s = 
   print_string s;
   flush stdout
+
+let some = fun x -> Some x
+
 end
 
 open Ops
@@ -492,7 +495,6 @@ let clone x n =
 
 let distinct xs = 
   List.length (sort_and_compact xs) = List.length xs
-
 
 let trunc i j = 
   let (ai,aj) = (abs i, abs j) in
