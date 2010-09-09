@@ -706,6 +706,11 @@ let zip_partition xs bs =
   let (xbs, xbs') = List.partition snd (List.combine xs bs) in
   (List.map fst xbs, List.map fst xbs')
 
+let rec map4 f ws xs ys zs = match ws, xs, ys, zs with
+  | [], [], [], []                     -> []
+  | w :: ws, x :: xs, y :: ys, z :: zs -> f w x y z :: map4 f ws xs ys zs
+  | _                                  -> assert false
+
 let rec perms es =
   match es with
     | s :: [] ->
@@ -723,6 +728,9 @@ let flap3 f xs ys zs =
 
 let combine3 xs ys zs =
   map3 (fun x y z -> (x, y, z)) xs ys zs
+
+let combine4 ws xs ys zs =
+  map4 (fun w x y z -> (w, x, y, z)) ws xs ys zs
 
 let tr_partition f xs =
   List.fold_left begin fun (xs,ys) z -> 
