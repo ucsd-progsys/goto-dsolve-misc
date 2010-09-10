@@ -121,45 +121,45 @@ let restore_olev = match !verb_stack with x :: xs -> verbose_level := x; verb_st
 let arg_spec = 
   [("-save", 
     Arg.String (fun s -> save_file := s), 
-    "Save constraints to file [out]"); 
+    " Save constraints to file [out]"); 
    ("-dropcalls",
      Arg.Set dropcalls,
-     "Ignore function calls during consgen [false]");
+     " Ignore function calls during consgen [false]");
    ("-drconstr", 
     Arg.Set dump_ref_constraints, 
-    "Dump refinement constraints [false]");
+    " Dump refinement constraints [false]");
    ("-ctypes",
     Arg.Set ctypes_only,
-    "Infer ctypes only [false]");
+    " Infer ctypes only [false]");
    ("-safe", 
     Arg.Set safe, 
-    "run in failsafe mode [false]");
+    " run in failsafe mode [false]");
    ("-manual",
     Arg.Set manual,
-    "only verify manually-inserted checks");
+    " only verify manually-inserted checks");
    ("-ptag", 
     Arg.Set ptag, 
-    "prioritize constraints using lexico-ordering on tags [true]");
+    " prioritize constraints using lexico-ordering on tags [true]");
    ("-genspec", 
     Arg.Set genspec, 
-    "Generate spec file only [false]");
+    " Generate spec file only [false]");
    ("-typespec",
     Arg.Set typespec,
-    "Use type-directed spec generation");
+    " Use type-directed spec generation");
    ("-root",
     Arg.String (fun s -> root := s),
-    "Use root function []");
+    " Use root function []");
    ("-psimple", 
     Arg.Set psimple, 
-    "prioritize simple constraints [true]");
+    " prioritize simple constraints [true]");
    ("-dgraph", 
     Arg.Set dump_graph, 
-    "dump constraints SCC to constraints.dot [false]");
+    " dump constraints SCC to constraints.dot [false]");
    ("-notruekvars",
     Arg.Clear true_unconstrained,
-    "don't true unconstrained kvars [true]");
+    " don't true unconstrained kvars [true]");
    ("-v", Arg.Int (fun c -> verbose_level := c), 
-              "<level> Set degree of analyzer verbosity:\n\
+              " <level> Set degree of analyzer verbosity:\n\
                \032    0      No output\n\
                \032    1      +Verbose errors\n\
                \032    [2]    +Verbose stats, timing\n\
@@ -174,7 +174,7 @@ let arg_spec =
 		      print_endline "-latex: invalid parameter"
 		    else
 		      latex_file := Some s),
-    "translates constraints to LaTeX file"
+    " translates constraints to LaTeX file"
    );
    ("-armc", 
     Arg.String (fun s -> 
@@ -183,7 +183,7 @@ let arg_spec =
 		      print_endline "-armc: invalid parameter"
 		    else
 		      armc_file := Some s),
-    "translate constraints to ARMC file"
+    " translate constraints to ARMC file"
    );
    ("-horn", 
     Arg.String (fun s -> 
@@ -192,7 +192,7 @@ let arg_spec =
 		      print_endline "-rules: invalid parameter"
 		    else
 		      horn_file := Some s),
-    "translate constraints to Horn clauses"
+    " translate constraints to Horn clauses"
    );
    ("-qarmc", 
     Arg.String (fun s -> 
@@ -201,7 +201,7 @@ let arg_spec =
 		      print_endline "-qarmc: invalid parameter"
 		    else
 		      q_armc_file := Some s),
-    "translate constraints to Q'ARMC file"
+    " translate constraints to Q'ARMC file"
    );
    ("-dot", 
     Arg.String (fun s -> 
@@ -210,43 +210,43 @@ let arg_spec =
 		      print_endline "-dot: invalid parameter"
 		    else
 		      dot_file := Some s),
-    "translate constraints to dot file"
+    " translate constraints to dot file"
    );
    ("-keep-uif", 
     Arg.Clear purify_function_application,
-    "do not replace function terms by existentially quantified variables"
+    " do not replace function terms by existentially quantified variables"
    );
    ("-no-simplify-t", 
     Arg.Clear simplify_t,
-    "do not simplify constraints"
+    " do not simplify constraints"
    );
    ("-simplify-t", 
     Arg.Set simplify_t,
-    "simplify constraints"
+    " simplify constraints"
    );
    ("-libpath",
     Arg.String (fun s -> lib_path := s), 
-    ("library path for default spec, quals ["^(!lib_path)^"]")
+    (" library path for default spec, quals ["^(!lib_path)^"]")
    );
    ("-nop",
     Arg.Set do_nothing,
-    "do nothing (useful for regression tests known to be broken)";
+    " do nothing (useful for regression tests known to be broken)";
    );
    ("-imp",
     Arg.Set dump_imp,
-    "print constraints as IMP program (experimental)"
+    " print constraints as IMP program (experimental)"
    );
    ("-prunelive",
     Arg.Set prune_live,
-    "Restrict liquid types to live variables (experimental)"
+    " Restrict liquid types to live variables (experimental)"
    ); 
    ("-simp",
     Arg.String ((:=) dump_simp),
-    "print simplified constraints to save-file (experimental) use [andrey] or [jhala] "
+    " print simplified constraints to save-file (experimental) use [andrey] or [jhala] "
    );
    ("-print-nontriv",
     Arg.Set (print_nontriv),
-    "print non-trivial bindings in each environment [false]"
+    " print non-trivial bindings in each environment [false]"
    );
   ]
 
