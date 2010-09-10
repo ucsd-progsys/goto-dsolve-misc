@@ -52,6 +52,7 @@ let dump_imp                    = ref false (* -imp *)
 let dump_simp                   = ref ""    (* -simp *)
 let prune_live                  = ref false (* -prunelive *)
 let print_nontriv               = ref false (* -print_nontriv *)
+let heapify_nonarrays           = ref true  (* heapify all stack variables *)
 
 (* JHALA: what do these do ? *)
 let psimple       = ref true            (* -psimple *)
