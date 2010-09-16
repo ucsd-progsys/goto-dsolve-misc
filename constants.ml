@@ -43,7 +43,6 @@ let dot_file: string option ref = ref None   (* translate to dot file *)
 let purify_function_application = ref true  (* replace fun-terms by existentially quantified variables *)
 let ptag                        = ref true  (* -ptag *)
 let genspec                     = ref false (* -genspec *)
-let typespec                    = ref false (* -typespec *)
 let simplify_t                  = ref false (* simplify and prune vacuous FixConstraint.t constraints *)
 let root                        = ref ""    (* root function *)
 let true_unconstrained          = ref true  (* -true_unconstrained *)
@@ -143,9 +142,6 @@ let arg_spec =
    ("-genspec", 
     Arg.Set genspec, 
     " Generate spec file only [false]");
-   ("-typespec",
-    Arg.Set typespec,
-    " Use type-directed spec generation");
    ("-root",
     Arg.String (fun s -> root := s),
     " Use root function []");
