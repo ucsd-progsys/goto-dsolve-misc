@@ -881,8 +881,8 @@ let array_combine a1 a2 =
 let compose f g a = f (g a)
 
 let maybe_bool = function
-  Some _ -> true
-  | None -> false
+  | Some _ -> true
+  | None   -> false
 
 let rec gcd (a: int) (b: int): int =
   if b = 0 then a else gcd b (a mod b)
