@@ -57,6 +57,8 @@ let (<+>) f g  = fun x -> x |> f |> g
 
 let (<?>) b f  = fun x -> if b then f x else x
 
+let (<*>) f g  = fun x -> (f x, g x)
+
 let failure fmt = 
   Printf.ksprintf failwith fmt
 
