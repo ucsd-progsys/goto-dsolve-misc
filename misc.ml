@@ -278,7 +278,9 @@ let map_triple = fun f (x1, x2, x3) -> (f x1, f x2, f x3)
 let app_fst    = fun f (a, b)       -> (f a, b)
 let app_snd    = fun f (a, b)       -> (a, f b)
 let app_fst3   = fun f (a, b, c)    -> (f a, b, c)
+
 let app_snd3   = fun f (a, b, c)    -> (a, f b, c)
+
 let app_thd3   = fun f (a, b, c)    -> (a, b, f c)
 let pad_snd    = fun f x            -> (x, f x)
 let pad_fst    = fun f y            -> (f y, y)
