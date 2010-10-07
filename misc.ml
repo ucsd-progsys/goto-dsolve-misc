@@ -31,36 +31,38 @@
  *)
 
 module Ops = struct
-let (|>) x f = f x
 
-let (<|) f x = f x
+  let (>|) _ x = x
 
-let (>>) x f = f x; x
+  let (|>) x f = f x
 
-let (|>>) xo f = match xo with None -> None | Some x -> f x
+  let (<|) f x = f x
 
-let (|>:) xs f = List.map f xs
+  let (>>) x f = f x; x
 
-let (+=) x n = x := !x + n; !x
+  let (|>>) xo f = match xo with None -> None | Some x -> f x
 
-let (++) = List.rev_append
+  let (|>:) xs f = List.map f xs
 
-let (+++)= fun (x1s, y1s) (x2s, y2s) -> (x1s ++ x2s, y1s ++ y2s)
+  let (+=) x n = x := !x + n; !x
 
-let id = fun x -> x
+  let (++) = List.rev_append
 
-let un = fun x -> ()
+  let (+++)= fun (x1s, y1s) (x2s, y2s) -> (x1s ++ x2s, y1s ++ y2s)
 
-let (<.>) f g  = fun x -> x |> g |> f
+  let id = fun x -> x
 
-let (<+>) f g  = fun x -> x |> f |> g 
+  let un = fun x -> ()
 
-let (<?>) b f  = fun x -> if b then f x else x
+  let (<.>) f g  = fun x -> x |> g |> f
 
-let (<*>) f g  = fun x -> (f x, g x)
+  let (<+>) f g  = fun x -> x |> f |> g 
 
-let failure fmt = 
-  Printf.ksprintf failwith fmt
+  let (<?>) b f  = fun x -> if b then f x else x
+
+  let (<*>) f g  = fun x -> (f x, g x)
+
+  let failure fmt = Printf.ksprintf failwith fmt
 
 let asserti p fmt = 
   Printf.ksprintf (fun x -> if not p then (print_string (x^"\n"); ignore(0/0)) else ()) fmt
