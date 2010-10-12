@@ -28,6 +28,7 @@ let global_name         = "GLOBAL"
 let lib_path            = Sys.argv.(0) |> Filename.dirname |> ref
 
 let file: string option ref = ref None         (* last commandline param*)
+let liquidc_file_prefix = ref "liquidc"        (* where to find/place liquidc-related files *)
 let safe                = ref false            (* -safe *)
 let manual              = ref false            (* -manual *)
 let save_file           = ref "out"            (* -save *)
