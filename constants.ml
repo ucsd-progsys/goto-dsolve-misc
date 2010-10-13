@@ -43,6 +43,8 @@ let raw_horn_file: string option ref  = ref None   (* translate to raw Horn clau
 let q_armc_file: string option ref = ref None   (* OBSOLETE translate to Q'ARMC file *)
 let dot_file: string option ref = ref None   (* translate to dot file *)
 let purify_function_application = ref true  (* replace fun-terms by existentially quantified variables *)
+
+let scalar                      = ref false (* -scalar *)
 let ptag                        = ref true  (* -ptag *)
 let genspec                     = ref false (* -genspec *)
 let simplify_t                  = ref false (* simplify and prune vacuous FixConstraint.t constraints *)
@@ -138,6 +140,9 @@ let arg_spec =
    ("-manual",
     Arg.Set manual,
     " only verify manually-inserted checks");
+   ("-scalar",
+    Arg.Set scalar,
+    " use scalar invariants for shape construction");
    ("-ptag", 
     Arg.Set ptag, 
     " prioritize constraints using lexico-ordering on tags [true]");
