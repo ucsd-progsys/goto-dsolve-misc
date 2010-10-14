@@ -615,7 +615,6 @@ let dump_gc s =
   pprint_gc (Gc.quick_stat ())
 
 
-
 let append_to_file f s = 
   let oc = Unix.openfile f [Unix.O_WRONLY; Unix.O_APPEND; Unix.O_CREAT] 420  in
   ignore (Unix.write oc s 0 ((String.length s)-1) ); 
