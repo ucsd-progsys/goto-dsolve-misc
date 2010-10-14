@@ -240,6 +240,9 @@ let list_reduce f = function
 let list_max x xs = 
   List.fold_left max x xs
 
+let list_min x xs = 
+  List.fold_left min x xs
+
 let rec take_max n = function
   | x :: xs when n > 0 -> x :: take_max (n - 1) xs
   | _                  -> []
@@ -647,6 +650,12 @@ let maybe_map f = function Some x -> Some (f x) | None -> None
 let maybe_iter f = function Some x -> f x | None -> ()
 
 let maybe = function Some x -> x | _ -> assertf "maybe called with None" 
+
+let rec maybe_chain x d = function 
+  | f::fs -> (match f x with 
+              | Some y -> y 
+              | None -> maybe_chain x d fs)
+  | []    -> d
 
 let lines_of_file filename = 
   let lines = ref [] in
