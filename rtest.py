@@ -6,6 +6,7 @@ class TestConfig:
     def __init__ (self, testdirs, logfile = None, threadcount = 1):
         self.testdirs    = testdirs
         self.logfile     = logfile
+        self.log         = dict()
         self.threadcount = threadcount
 
         f = open(logfile, "a")
@@ -19,12 +20,16 @@ class TestConfig:
         pass
 
     def log_test (self, file, runtime, ok):
+        self.log[file] = (runtime, ok)
+
+    def write_log (self):
         if self.logfile == None:
             return
 
         f = open(self.logfile, "a")
-        #f.write("test: %s\ntime: %f seconds\nresult: %s\n\n" % (file, runtime, ok))
-        f.write("%s, %f, %s \n" % (file, runtime, ok))
+        for file, (runtime, ok) in sorted(self.log.items()):
+            #f.write("test: %s\ntime: %f seconds\nresult: %s\n\n" % (file, runtime, ok))
+            f.write("%s, %f, %s \n" % (file, runtime, ok))
 	f.close()
   
 class TestRunner:
@@ -53,6 +58,7 @@ class TestRunner:
             print "\n\033[1;32mPassed all tests! :D\033[1;0m"
         else:
             print "\n\033[1;31mFailed %d tests:\033[1;0m %s" % (failcount, ", ".join(failed))
+        self.config.write_log()
         return (failcount != 0)
 
     def directory_tests (self, dir, expected_status):
