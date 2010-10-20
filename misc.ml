@@ -44,6 +44,8 @@ module Ops = struct
 
   let (|>:) xs f = List.map f xs
 
+  let (=+) x n = let v = !x in (x := v + n; v)
+
   let (+=) x n = x := !x + n; !x
 
   let (++) = List.rev_append
