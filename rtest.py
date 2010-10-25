@@ -5,8 +5,10 @@ import itertools as it
 class TestConfig:
     def __init__ (self, testdirs, logfile = None, threadcount = 1):
         self.testdirs    = testdirs
+        self.valid_exits = [x for d, x in self.testdirs]
         self.logfile     = logfile
         self.log         = dict()
+        self.exceptions  = list()
         self.threadcount = threadcount
 
         f = open(logfile, "a")
@@ -21,6 +23,8 @@ class TestConfig:
 
     def log_test (self, file, runtime, ok):
         self.log[file] = (runtime, ok)
+        if ok not in self.valid_exits:
+            self.exceptions.append (file)
 
     def write_log (self):
         if self.logfile == None:
@@ -48,16 +52,23 @@ class TestRunner:
         else:
             print "\033[1;31mFAILURE :(\033[1;0m (%s) \n" % (file)
         self.config.log_test(file, runtime, ok)
-        return (file, ok)
+        
+        return (file, ok, status not in self.config.valid_exits)
 
     def run_tests (self, tests):
         results   = pmap.map (self.config.threadcount, self.run_test, tests)
-        failed    = [result[0] for result in results if result[1] == False]
+        failed    = [(result[0], result[2]) for result in results if result[1] == False]
         failcount = len(failed)
         if failcount == 0:
             print "\n\033[1;32mPassed all tests! :D\033[1;0m"
         else:
-            print "\n\033[1;31mFailed %d tests:\033[1;0m %s" % (failcount, ", ".join(failed))
+            failnames  = [fail[0] for fail in failed]
+            print "\n\033[1;31mFailed %d tests:\033[1;0m %s" % (failcount, ", ".join(failnames))
+
+            exceptions = [fail[0] for fail in failed if fail[1]]
+            if exceptions != []:
+                print "\n\033[1;31mExceptions thrown on %d tests:\033[1;0m %s" % (len(exceptions), ", ".join(exceptions))
+
         self.config.write_log()
         return (failcount != 0)
 
