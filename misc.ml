@@ -165,6 +165,11 @@ module StringSet =
     let compare i1 i2 = compare i1 i2
   end)
 
+let sm_join sm1 sm2 = 
+  StringMap.mapi (fun k v1 ->
+    (v1, (try Some (StringMap.find k sm2) with Not_found -> None))
+  ) sm1
+
 let sm_extend sm1 sm2 =
   StringMap.fold StringMap.add sm2 sm1 
 
