@@ -732,7 +732,8 @@ let zip_partition xs bs =
 let rec map4 f ws xs ys zs = match ws, xs, ys, zs with
   | [], [], [], []                     -> []
   | w :: ws, x :: xs, y :: ys, z :: zs -> f w x y z :: map4 f ws xs ys zs
-  | _                                  -> assert false
+  | _                                  -> asserti false "map4"; assert false
+
 
 let rec perms es =
   match es with
