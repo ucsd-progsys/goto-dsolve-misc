@@ -167,7 +167,8 @@ module StringSet =
 
 let sm_join sm1 sm2 = 
   StringMap.mapi (fun k v1 ->
-    (v1, (try Some (StringMap.find k sm2) with Not_found -> None))
+    let v2 = asserts (StringMap.mem k sm2) "sm_join"; StringMap.find k sm2 in
+    (v1, v2)
   ) sm1
 
 let sm_extend sm1 sm2 =
