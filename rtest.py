@@ -40,13 +40,16 @@ class TestRunner:
     def __init__ (self, config):
         self.config = config
 
-    def run_test (self, (file, expected_status)):
+    def run_test (self, (file, expected_statuses)):
         start   = time.time ()
         status  = self.config.run_test (file)
         runtime = time.time () - start
         print "%f seconds" % (runtime)
 
-        ok = (status == expected_status)
+        if hasattr (expected_statuses, '__iter__'):
+	  ok = (status in expected_statuses)
+	else:
+	  ok = (status == expected_statuses)
         if ok:
             print "\033[1;32mSUCCESS!\033[1;0m (%s)\n" % (file)
         else:
