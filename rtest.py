@@ -57,7 +57,7 @@ class TestRunner:
 
     def run_tests (self, tests):
         results   = pmap.map (self.config.threadcount, self.run_test, tests)
-        failed    = [(result[0], result[2]) for result in results if result[1] == False]
+        failed    = sorted([(result[0], result[2]) for result in results if result[1] == False])
         failcount = len(failed)
         if failcount == 0:
             print "\n\033[1;32mPassed all tests! :D\033[1;0m"
