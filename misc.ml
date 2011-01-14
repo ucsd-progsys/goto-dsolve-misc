@@ -911,6 +911,9 @@ let maybe_bool = function
 let rec gcd (a: int) (b: int): int =
   if b = 0 then a else gcd b (a mod b)
 
+let lcm (a: int) (b: int): int =
+  if a = 0 then a else (abs (a * b)) / (gcd a b)
+
 let mk_int_factory () =
   let id = ref (-1) in
     ((fun () -> incr id; !id), (fun () -> id := -1))
