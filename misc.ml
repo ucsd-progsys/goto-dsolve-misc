@@ -56,6 +56,7 @@ module Ops = struct
 
   let un = fun x -> ()
 
+
   let (<.>) f g  = fun x -> x |> g |> f
 
   let (<+>) f g  = fun x -> x |> f |> g 
@@ -63,6 +64,8 @@ module Ops = struct
   let (<?>) b f  = fun x -> if b then f x else x
 
   let (<*>) f g  = fun x -> (f x, g x)
+  
+  let (<**>) f g = fun (x, y) -> (f x, g y)
 
   let failure fmt = Printf.ksprintf failwith fmt
 
