@@ -23,4 +23,4 @@ clean:
 	rm -rf *.byte *.native _build _log
 
 test:
-	ocamlbuild -r $(LIBS) $(IFLAGS) $(CFLAGS) timetest.native
+	ocamlbuild -r $(LIBS) $(IFLAGS) $(CFLAGS) -tags thread timetest.native
