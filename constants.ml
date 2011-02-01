@@ -57,6 +57,7 @@ let dump_simp                   = ref ""    (* -simp *)
 let prune_live                  = ref false (* -prunelive *)
 let print_nontriv               = ref false (* -print_nontriv *)
 let heapify_nonarrays           = ref true  (* heapify all stack variables *)
+let timeout                     = ref (-1)
 
 (* JHALA: what do these do ? *)
 let psimple       = ref true            (* -psimple *)
@@ -144,6 +145,9 @@ let arg_spec =
    ("-scalar",
     Arg.Set scalar,
     " use scalar invariants for shape construction");
+   ("-timeout",
+    Arg.Set_int timeout,
+    " limit total time (in seconds, default no limit)");
    ("-ptag", 
     Arg.Set ptag, 
     " prioritize constraints using lexico-ordering on tags [true]");
