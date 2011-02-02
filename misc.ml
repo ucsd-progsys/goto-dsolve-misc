@@ -56,7 +56,6 @@ module Ops = struct
 
   let un = fun x -> ()
 
-
   let (<.>) f g  = fun x -> x |> g |> f
 
   let (<+>) f g  = fun x -> x |> f |> g 
