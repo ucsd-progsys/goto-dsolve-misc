@@ -43,7 +43,7 @@ let raw_horn_file: string option ref  = ref None   (* translate to raw Horn clau
 let q_armc_file: string option ref = ref None   (* OBSOLETE translate to Q'ARMC file *)
 let dot_file: string option ref = ref None   (* translate to dot file *)
 let purify_function_application = ref true  (* replace fun-terms by existentially quantified variables *)
-let z3_timeout           = ref 120
+let z3_timeout           = ref 25
 
 let scalar                      = ref false (* -scalar *)
 let ptag                        = ref true  (* -ptag *)
