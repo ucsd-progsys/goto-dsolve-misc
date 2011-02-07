@@ -1,19 +1,40 @@
 import time, os, os.path
 import pmap
 import itertools as it
+import threading, Queue
+
+class LogWriter (threading.Thread):
+    def __init__ (self, logfile, q):
+        threading.Thread.__init__ (self)
+        self.log = open (logfile, "w")
+        self.q   = q
+        self.log.write("test, time(s), result \n")
+
+    def __del__ (self):
+        self.log.close ()
+
+    def run (self):
+        while True:
+            try:
+                file, runtime, ok = self.q.get ()
+                self.log.write("%s, %f, %s \n" % (file, runtime, ok))
+                self.log.flush()
+                self.q.task_done ()
+            except Queue.Empty:
+                return
 
 class TestConfig:
     def __init__ (self, testdirs, logfile = None, threadcount = 1):
         self.testdirs    = testdirs
         self.valid_exits = [x for d, x in self.testdirs]
-        self.logfile     = logfile
-        self.log         = dict()
+        if logfile != None:
+            self.logq   = Queue.Queue ()
+            self.logger = LogWriter (logfile, self.logq)
+            self.logger.start ()
+        else:
+            self.logger = None
         self.exceptions  = list()
         self.threadcount = threadcount
-
-        f = open(logfile, "a")
-	f.write("test, time(s), result \n")
-	f.close()
 
     def is_test (self, file):
         pass
@@ -22,19 +43,11 @@ class TestConfig:
         pass
 
     def log_test (self, file, runtime, ok):
-        self.log[file] = (runtime, ok)
+        if self.logger != None:
+            self.logq.put ((file, runtime, ok))
+
         if ok not in self.valid_exits:
             self.exceptions.append (file)
-
-    def write_log (self):
-        if self.logfile == None:
-            return
-
-        f = open(self.logfile, "a")
-        for file, (runtime, ok) in sorted(self.log.items()):
-            #f.write("test: %s\ntime: %f seconds\nresult: %s\n\n" % (file, runtime, ok))
-            f.write("%s, %f, %s \n" % (file, runtime, ok))
-	f.close()
   
 class TestRunner:
     def __init__ (self, config):
@@ -72,7 +85,6 @@ class TestRunner:
             if exceptions != []:
                 print "\n\033[1;31mExceptions thrown on %d tests:\033[1;0m %s" % (len(exceptions), ", ".join(exceptions))
 
-        self.config.write_log()
         return (failcount != 0)
 
     def directory_tests (self, dir, expected_status):
