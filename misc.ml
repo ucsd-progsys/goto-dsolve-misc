@@ -659,8 +659,6 @@ let get_unique =
   let cnt = ref 0 in
   (fun () -> let rv = !cnt in incr cnt; rv)
 
-let flip f x y =
-  f y x
 
 let maybe_fold f b xs = 
   let fo = fun bo x -> match bo with Some b -> f b x | _ -> None in
