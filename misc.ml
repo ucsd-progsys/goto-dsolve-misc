@@ -326,6 +326,17 @@ let mapfold f b xs =
   mapfold_rev f b xs 
   |> app_snd List.rev 
 
+let cov_filter cov f xs = 
+  let rec loop acc = function
+    | [] -> 
+        acc
+    | (x::xs) when f x -> 
+        let (xcovs, xs') = List.partition (cov x) xs in
+        loop ((x::xcovs) ++ acc) xs'
+    | (_::xs) ->
+      loop acc xs
+  in loop [] xs
+
 let filter f xs = 
   List.fold_left (fun xs' x -> if f x then x::xs' else xs') [] xs
   |> List.rev
