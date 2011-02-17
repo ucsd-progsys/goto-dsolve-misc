@@ -45,6 +45,7 @@ let dot_file: string option ref = ref None   (* translate to dot file *)
 let purify_function_application = ref true  (* replace fun-terms by existentially quantified variables *)
 let z3_timeout           = ref 25
 
+let minquals                    = ref false (* -minquals *)
 let scalarcheck                 = ref false (* -scalarcheck *)
 let scalar                      = ref false (* -scalar *)
 let ptag                        = ref true  (* -ptag *)
@@ -143,6 +144,9 @@ let arg_spec =
    ("-manual",
     Arg.Set manual,
     " only verify manually-inserted checks");
+   ("-minquals",
+    Arg.Set minquals,
+    " minimize qualifiers by using pre-computed one-level implication ");
    ("-scalarcheck",
     Arg.Set scalarcheck,
     " check scalar invariants against inferctypes, results in .scalarlog");
