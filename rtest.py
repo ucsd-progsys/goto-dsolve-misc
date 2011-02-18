@@ -6,22 +6,23 @@ import threading, Queue
 class LogWriter (threading.Thread):
     def __init__ (self, logfile, q):
         threading.Thread.__init__ (self)
-        self.log = open (logfile, "w")
-        self.q   = q
+        self.log  = open (logfile, "w")
+        self.q    = q
+        self.halt = False
         self.log.write("test, time(s), result \n")
 
     def __del__ (self):
         self.log.close ()
 
     def run (self):
-        while True:
+        while not self.halt:
             try:
-                file, runtime, ok = self.q.get ()
+                file, runtime, ok = self.q.get (timeout=1)
                 self.log.write("%s, %f, %s \n" % (file, runtime, ok))
                 self.log.flush()
                 self.q.task_done ()
             except Queue.Empty:
-                return
+                pass
 
 class TestConfig:
     def __init__ (self, testdirs, logfile = None, threadcount = 1):
@@ -35,6 +36,10 @@ class TestConfig:
             self.logger = None
         self.exceptions  = list()
         self.threadcount = threadcount
+
+    def finalize (self):
+        if self.logger != None:
+            self.logger.halt = True
 
     def is_test (self, file):
         pass
@@ -73,6 +78,7 @@ class TestRunner:
 
     def run_tests (self, tests):
         results   = pmap.map (self.config.threadcount, self.run_test, tests)
+        self.config.finalize()
         failed    = sorted([(result[0], result[2]) for result in results if result[1] == False])
         failcount = len(failed)
         if failcount == 0:
