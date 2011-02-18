@@ -329,13 +329,14 @@ let mapfold f b xs =
 let cov_filter cov f xs = 
   let rec loop acc = function
     | [] -> 
-        acc
-    | (x::xs) when f x -> 
-        let (xcovs, xs') = List.partition (cov x) xs in
-        loop ((x::xcovs) ++ acc) xs'
+        List.rev acc
+    | (x::xs) when f x ->
+        let uncovs  = List.filter (fun y -> not (cov x y)) xs in
+        loop (x::acc) uncovs
     | (_::xs) ->
       loop acc xs
   in loop [] xs
+   
 
 let filter f xs = 
   List.fold_left (fun xs' x -> if f x then x::xs' else xs') [] xs
