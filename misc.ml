@@ -524,6 +524,8 @@ let clone x n =
   let rec f n xs = if n <= 0 then xs else f (n-1) (x::xs) in
   f n []
 
+let single x = [x]
+
 let distinct xs = 
   List.length (sort_and_compact xs) = List.length xs
 
