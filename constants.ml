@@ -66,6 +66,7 @@ let psimple       = ref true            (* -psimple *)
 let simple        = ref true            (* -simple  *) 
 let dump_graph    = ref false           (* -dgraph :: this probably caused the dsolve solver to dump the constraint graph *)
 let dropcalls     = ref false           (* -dropcalls *)
+let adjdeps       = ref true            (* -origdeps *)
 
 (****************************************************************)
 (************* Output levels ************************************)
@@ -129,7 +130,10 @@ let arg_spec =
   [("-save", 
     Arg.String (fun s -> save_file := s), 
     " Save constraints to file [out]"); 
-   ("-dropcalls",
+   ("-origdeps",
+     Arg.Clear adjdeps,
+     " Don't adjust constraint dependencies [true]");
+    ("-dropcalls",
      Arg.Set dropcalls,
      " Ignore function calls during consgen [false]");
    ("-drconstr", 
