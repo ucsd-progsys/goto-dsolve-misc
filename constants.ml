@@ -31,7 +31,8 @@ let file: string option ref = ref None         (* last commandline param*)
 let liquidc_file_prefix = ref "liquidc"        (* where to find/place liquidc-related files *)
 let safe                = ref false            (* -safe *)
 let manual              = ref false            (* -manual *)
-let save_file           = ref "out"            (* -save *)
+let out_file            = ref "out"            (* -save *)
+let save_file           = ref "out.fq"         (* -save *)
 let dump_ref_constraints= ref false            (* -drconstr *)
 let ctypes_only         = ref false            (* -ctypes *)
 let ol_default          = 2
@@ -127,9 +128,12 @@ let restore_olev = match !verb_stack with x :: xs -> verbose_level := x; verb_st
 (* taken from dsolve/liquid/liquid.ml *)
 
 let arg_spec = 
-  [("-save", 
+  [("-out", 
+    Arg.String (fun s -> out_file := s), 
+    " Save solution to file [out]"); 
+   ("-save", 
     Arg.String (fun s -> save_file := s), 
-    " Save constraints to file [out]"); 
+    " Save constraints to file [out.fq]"); 
    ("-origdeps",
      Arg.Clear adjdeps,
      " Don't adjust constraint dependencies [true]");
