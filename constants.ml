@@ -47,8 +47,6 @@ let purify_function_application = ref true  (* replace fun-terms by existentiall
 let z3_timeout           = ref 25
 
 let minquals                    = ref false (* -minquals *)
-let scalarcheck                 = ref false (* -scalarcheck *)
-let scalar                      = ref false (* -scalar *)
 let ptag                        = ref true  (* -ptag *)
 let genspec                     = ref false (* -genspec *)
 let simplify_t                  = ref false (* simplify and prune vacuous FixConstraint.t constraints *)
@@ -155,12 +153,6 @@ let arg_spec =
    ("-minquals",
     Arg.Set minquals,
     " minimize qualifiers by using pre-computed one-level implication ");
-   ("-scalarcheck",
-    Arg.Set scalarcheck,
-    " check scalar invariants against inferctypes, results in .scalarlog");
-   ("-scalar",
-    Arg.Set scalar,
-    " use scalar invariants for shape construction");
    ("-timeout",
     Arg.Set_int timeout,
     " limit total time (in seconds, default no limit)");
