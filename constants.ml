@@ -105,15 +105,10 @@ let ck_olev l = l <= !verbose_level
 let bprintf b = if b then Format.printf else nprintf
 let cprintf l = if ck_olev l then Format.printf else nprintf
 let ecprintf l = if ck_olev l then Format.eprintf else nprintf
-
 let fcprintf ppf l = if ck_olev l then Format.fprintf ppf else nprintf
-
 let icprintf printer l ppf = if ck_olev l then printer ppf else printer null_formatter
-
 let cprintln l s = if ck_olev l then Printf.ksprintf (Format.printf "@[%s@\n@]") s else nprintf
-
 let elevate_olev l = if ck_olev l then () else verb_stack := !verbose_level :: !verb_stack; verbose_level := l
-
 let restore_olev = match !verb_stack with x :: xs -> verbose_level := x; verb_stack := xs | _ -> ()
 
 
