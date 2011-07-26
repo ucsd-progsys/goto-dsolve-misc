@@ -112,6 +112,56 @@ let curry   = fun f x y   -> f (x,y)
 let uncurry = fun f (x,y) -> f x y
 let flip    = fun f x y   -> f y x
 
+module type EMapType = sig
+  include Map.S
+
+  val extend  : 'a t -> 'a t -> 'a t
+  val filter  : (key -> 'a -> bool) -> 'a t -> 'a t
+  val of_list : (key * 'a) list -> 'a t
+  val to_list : 'a t -> (key * 'a) list
+  val length  : 'a t -> int
+  val range   : 'a t -> 'a list
+  val join    : 'a t -> 'b t -> ('a * 'b) t
+  val adds    : key -> 'a -> 'a list t -> 'a list t
+end
+
+
+module EMap (K: Map.OrderedType) = 
+  struct
+    include Map.Make(K)
+
+    let extend (m1: 'a t)  (m2: 'a t) : 'a t = fold add m2 m1
+
+    (* in 3.12 *)
+    let filter (f: key -> 'a -> bool) (m: 'a t) : 'a t =  
+      fold (fun x y m -> if f x y then add x y m else m) m empty 
+
+    let of_list (kvs : (key * 'a) list) = 
+      List.fold_left (fun m (k, v) -> add k v m) empty kvs
+
+    (* in 3.12 -- bindings *)
+    let to_list (m : 'a t) : (key * 'a) list = 
+      fold (fun k v acc -> (k,v)::acc) m [] 
+
+    (* in 3.12 -- cardinality *)
+    let length (m : 'a t) : int = 
+      fold (fun _ _ i -> i+1) m 0
+
+    let range (m : 'a t) : 'a list = 
+      fold (fun _ v acc -> v :: acc) m []
+     
+    let join (m1 : 'a t) (m2 : 'b t) : ('a * 'b) t =
+      mapi begin fun k v1 ->
+        let _  = asserts (mem k m2) "EMap.join" in
+        (v1, find k m2) 
+      end m1
+
+    let adds (k: key) (v: 'a) (m : ('a list) t) : 'a list t = 
+      let vs = try find k m with Not_found -> [] in
+      add k (v::vs) m
+
+  end
+
 module type KeyValType =
   sig
     type t
@@ -123,14 +173,14 @@ module type KeyValType =
 
 module MapWithDefault (K: KeyValType) =
   struct
-    include Map.Make(K)
+    include EMap(K)
 
     let find (i: K.t) (m: K.v t): K.v =
       try find i m with Not_found -> K.default
   end
 
 module IntMap = 
-  Map.Make 
+  EMap
   (struct
     type t = int
     let compare i1 i2 = 
@@ -146,7 +196,7 @@ module IntSet =
   end)
 
 module IntIntMap = 
-  Map.Make 
+  EMap 
   (struct
     type t = int * int
     let compare i1 i2 = 
@@ -154,7 +204,7 @@ module IntIntMap =
    end)
 
 module StringMap = 
-  Map.Make 
+  EMap 
   (struct
     type t = string 
     let compare i1 i2 = compare i1 i2
@@ -167,6 +217,7 @@ module StringSet =
     let compare i1 i2 = compare i1 i2
   end)
 
+(* 
 let sm_join sm1 sm2 = 
   StringMap.mapi (fun k v1 ->
     let v2 = asserts (StringMap.mem k sm2) "sm_join"; StringMap.find k sm2 in
@@ -189,9 +240,10 @@ let sm_to_list sm =
 
 let sm_to_range sm = 
   sm |> sm_to_list |> List.map snd
+*)
 
 let sm_print_keys name sm =
-  sm |> sm_to_list 
+  sm |> StringMap.to_list 
      |> List.map fst 
      |> String.concat ", "
      |> Printf.printf "%s : %s \n" name
@@ -243,8 +295,8 @@ let fold_left_partial f b xs =
       | None   -> b
   end b xs
 
-let list_reduce f = function
-  | []    -> assertf "ERROR: list_reduce with empty list"
+let list_reduce msg f = function
+  | []    -> assertf "ERROR: list_reduce with empty list: %s" msg 
   | x::xs -> List.fold_left f x xs
 
 let list_max x xs = 
@@ -252,6 +304,10 @@ let list_max x xs =
 
 let list_min x xs = 
   List.fold_left min x xs
+
+let list_max_with msg f = function
+  | []    -> assertf "ERROR: list_max_with with empty list: %s" msg 
+  | x::xs -> List.fold_left (fun acc x -> if f x > f acc then x else acc) x xs
 
 let rec take_max n = function
   | x :: xs when n > 0 -> x :: take_max (n - 1) xs
@@ -498,6 +554,8 @@ let sm_protected_add fail k v sm =
     if not fail then sm else 
       assertf "protected_add: duplicate binding for %s \n" k
 
+(* 
+
 let sm_adds k v sm = 
   let vs = try StringMap.find k sm with Not_found -> [] in
   StringMap.add k (v::vs) sm
@@ -516,6 +574,7 @@ let intmap_for_all f m =
     IntMap.iter (fun i v -> if not (f i v) then raise FalseException) m;
     true
   with FalseException -> false
+*)
 
 let hashtbl_to_list_all t = 
   hashtbl_keys t |> map (Hashtbl.find_all t) 
