@@ -123,6 +123,7 @@ module type EMapType = sig
   val range   : 'a t -> 'a list
   val join    : 'a t -> 'b t -> ('a * 'b) t
   val adds    : key -> 'a -> 'a list t -> 'a list t
+  val single  : key -> 'a -> 'a t
 end
 
 
@@ -146,6 +147,9 @@ module EMap (K: Map.OrderedType) =
     (* in 3.12 -- cardinality *)
     let length (m : 'a t) : int = 
       fold (fun _ _ i -> i+1) m 0
+
+    (* in 3.12 -- singleton *)
+    let single k v = add k v empty
 
     let range (m : 'a t) : 'a list = 
       fold (fun _ v acc -> v :: acc) m []
@@ -775,6 +779,10 @@ let fold_lefti f b xs =
 let mapi f xs = 
   xs |> fold_lefti (fun i acc x -> (f i x) :: acc) [] 
      |> snd |> List.rev
+
+let index_from n xs = 
+  let is = range n (n + List.length xs) in
+  List.combine is xs
 
 let fold_left_flip f b xs =
   List.fold_left (flip f) b xs
