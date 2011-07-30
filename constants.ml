@@ -35,6 +35,7 @@ let out_file            = ref "out"            (* -save *)
 let save_file           = ref "out.fq"         (* -save *)
 let dump_ref_constraints= ref false            (* -drconstr *)
 let ctypes_only         = ref false            (* -ctypes *)
+let new_spec_gen        = ref false            (* -newspecs *)
 let ol_default          = 2
 let verbose_level       = ref ol_default       (* -v *)
 let latex_file: string option ref = ref None   (* translate to LaTeX *)
@@ -139,6 +140,9 @@ let arg_spec =
    ("-ctypes",
     Arg.Set ctypes_only,
     " Infer ctypes only [false]");
+   ("-newspecs",
+    Arg.Set new_spec_gen,
+    " Use new spec generator [false]");
    ("-safe", 
     Arg.Set safe, 
     " run in failsafe mode [false]");
