@@ -21,6 +21,7 @@
  *)
 
 open Misc.Ops
+module SS = Misc.StringSet
 
 (******* This module contains globals representing "flags" **************)
 let annotsep_name       = "\n\n=+=\n\n"
@@ -38,6 +39,7 @@ let ctypes_only         = ref false            (* -ctypes *)
 let new_spec_gen        = ref false            (* -newspecs *)
 let ol_default          = 2
 let verbose_level       = ref ol_default       (* -v *)
+let inccheck            = ref SS.empty         (* -inccheck *)
 let latex_file: string option ref = ref None   (* translate to LaTeX *)
 let armc_file: string option ref  = ref None   (* translate to ARMC *)
 let horn_file: string option ref  = ref None   (* translate to Horn clauses *)
@@ -128,6 +130,9 @@ let arg_spec =
    ("-save", 
     Arg.String (fun s -> save_file := s), 
     " Save constraints to file [out.fq]"); 
+   ("-inccheck", 
+    Arg.String (fun s -> inccheck := SS.add s !inccheck), 
+    " Incrementally check the specified function"); 
    ("-origdeps",
      Arg.Clear adjdeps,
      " Don't adjust constraint dependencies [true]");
