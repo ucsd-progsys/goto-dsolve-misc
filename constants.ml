@@ -131,7 +131,8 @@ let arg_spec =
     Arg.String (fun s -> save_file := s), 
     " Save constraints to file [out.fq]"); 
    ("-inccheck", 
-    Arg.String (fun s -> inccheck := SS.add s !inccheck), 
+    Arg.String (fun s -> true_unconstrained := false; 
+                         inccheck := SS.add s !inccheck), 
     " Incrementally check the specified function"); 
    ("-origdeps",
      Arg.Clear adjdeps,

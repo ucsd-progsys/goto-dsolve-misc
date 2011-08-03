@@ -126,6 +126,18 @@ module type EMapType = sig
   val single  : key -> 'a -> 'a t
 end
 
+module type ESetType = sig
+  include Set.S
+  val of_list : elt list -> t
+end
+
+module ESet (K: Set.OrderedType) = 
+  struct
+    include Set.Make(K)
+    let of_list = List.fold_left (flip add) empty  
+end
+
+ 
 
 module EMap (K: Map.OrderedType) = 
   struct
@@ -215,7 +227,7 @@ module StringMap =
   end)
 
 module StringSet =
-  Set.Make
+  ESet
   (struct
     type t = string
     let compare i1 i2 = compare i1 i2
