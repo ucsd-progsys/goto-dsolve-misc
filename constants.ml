@@ -300,7 +300,6 @@ let is_pure_function s =
 
 let is_cil_tempvar s = 
   Misc.is_prefix "__cil_tmp" s || 
-  Misc.is_prefix "tmp___" s ||
   Misc.is_prefix "mem_" s
 
 let suffix_of_fn = fun fn -> "_" ^ fn
