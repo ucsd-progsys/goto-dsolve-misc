@@ -120,6 +120,7 @@ module type EMapType = sig
   val of_list : (key * 'a) list -> 'a t
   val to_list : 'a t -> (key * 'a) list
   val length  : 'a t -> int
+  val domain  : 'a t -> key list
   val range   : 'a t -> 'a list
   val join    : 'a t -> 'b t -> ('a * 'b) t
   val adds    : key -> 'a -> 'a list t -> 'a list t
@@ -162,6 +163,9 @@ module EMap (K: Map.OrderedType) =
 
     (* in 3.12 -- singleton *)
     let single k v = add k v empty
+
+    let domain m =
+      fold (fun k _ acc -> k :: acc) m []
 
     let range (m : 'a t) : 'a list = 
       fold (fun _ v acc -> v :: acc) m []
