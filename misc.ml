@@ -932,6 +932,12 @@ let kgroupby (f: 'a -> 'b) (xs: 'a list): ('b * 'a list) list =
 let groupby (f: 'a -> 'b) (xs: 'a list): 'a list list =
   kgroupby f xs |> List.map (snd <+> List.rev)
 
+let full_join f xs ys =
+     (xs, ys)
+  |> map_pair (kgroupby f)
+  |> uncurry (join fst)
+  |> flap (map_pair snd <+> uncurry cross_product)
+
 let exists_pair (f: 'a -> 'a -> bool) (xs: 'a list): bool =
   fst (List.fold_left (fun (b, ys) x -> (b || List.exists (f x) ys, x :: ys)) (false, []) xs)
 
