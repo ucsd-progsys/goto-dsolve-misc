@@ -36,7 +36,6 @@ let out_file            = ref "out"            (* -save *)
 let save_file           = ref "out.fq"         (* -save *)
 let dump_ref_constraints= ref false            (* -drconstr *)
 let ctypes_only         = ref false            (* -ctypes *)
-let new_spec_gen        = ref false            (* -newspecs *)
 let ol_default          = 2
 let verbose_level       = ref ol_default       (* -v *)
 let inccheck            = ref SS.empty         (* -inccheck *)
@@ -104,7 +103,6 @@ let null_formatter = Format.make_formatter (fun a b c -> ()) ignore
 let nprintf a = Format.fprintf null_formatter a
 let ck_olev l = l <= !verbose_level
 
-
 let bprintf b = if b then Format.printf else nprintf
 let cprintf l = if ck_olev l then Format.printf else nprintf
 let ecprintf l = if ck_olev l then Format.eprintf else nprintf
@@ -114,8 +112,19 @@ let cprintln l s = if ck_olev l then Printf.ksprintf (Format.printf "@[%s@\n@]")
 let elevate_olev l = if ck_olev l then () else verb_stack := !verbose_level :: !verb_stack; verbose_level := l
 let restore_olev = match !verb_stack with x :: xs -> verbose_level := x; verb_stack := xs | _ -> ()
 
+(******************************************************************************)
+(*********************************** Logging **********************************)
+(******************************************************************************)
 
+let logChannel   = ref stdout
+let logFormatter = ref (Format.formatter_of_out_channel stdout)
 
+let setLogChannel lc =
+  logChannel   := lc;
+  logFormatter := Format.formatter_of_out_channel lc
+
+let logPrintf a  = Format.fprintf !logFormatter a
+let cLogPrintf l = if ck_olev l then logPrintf else nprintf
 
 (*****************************************************************)
 (*********** Command Line Options ********************************)
@@ -146,9 +155,6 @@ let arg_spec =
    ("-ctypes",
     Arg.Set ctypes_only,
     " Infer ctypes only [false]");
-   ("-newspecs",
-    Arg.Set new_spec_gen,
-    " Use new spec generator [false]");
    ("-safe", 
     Arg.Set safe, 
     " run in failsafe mode [false]");
@@ -294,7 +300,6 @@ let is_pure_function s =
 
 let is_cil_tempvar s = 
   Misc.is_prefix "__cil_tmp" s || 
-  Misc.is_prefix "tmp___" s ||
   Misc.is_prefix "mem_" s
 
 let suffix_of_fn = fun fn -> "_" ^ fn
