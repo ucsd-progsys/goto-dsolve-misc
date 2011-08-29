@@ -137,7 +137,7 @@ let arg_spec =
    ("-origdeps",
      Arg.Clear adjdeps,
      " Don't adjust constraint dependencies [true]");
-    ("-dropcalls",
+   ("-dropcalls",
      Arg.Set dropcalls,
      " Ignore function calls during consgen [false]");
    ("-drconstr", 
