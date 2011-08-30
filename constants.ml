@@ -61,6 +61,8 @@ let prune_live                  = ref false (* -prunelive *)
 let print_nontriv               = ref false (* -print_nontriv *)
 let heapify_nonarrays           = ref true  (* heapify all stack variables *)
 let timeout                     = ref (-1)
+let lfp                         = ref false (* -lfp *)
+
 
 (* JHALA: what do these do ? *)
 let psimple       = ref true            (* -psimple *)
@@ -143,6 +145,9 @@ let arg_spec =
     Arg.String (fun s -> true_unconstrained := false; 
                          inccheck := SS.add s !inccheck), 
     " Incrementally check the specified function"); 
+   ("-lfp",
+   Arg.Set lfp,
+   " Compute least-fixpoint solution -- not just prove implications [false]"); 
    ("-origdeps",
      Arg.Clear adjdeps,
      " Don't adjust constraint dependencies [true]");

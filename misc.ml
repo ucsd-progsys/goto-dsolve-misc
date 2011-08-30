@@ -1057,3 +1057,10 @@ let absolute_name name =
 let cardinality = fun xs -> xs |> sort_and_compact |> List.length
 let disjoint    = fun xs ys -> cardinality xs + cardinality ys = cardinality (xs ++ ys)
 
+let with_ref_at x v f = 
+  let oldv = !x        in 
+  let _    = x := v    in
+  let res  = f ()      in
+  let _    = x := oldv in
+  res
+
