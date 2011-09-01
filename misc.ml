@@ -792,6 +792,9 @@ let maybe_cons m xs = match m with
 let maybe_list xs = 
   List.fold_right maybe_cons xs []
 
+let list_assoc_default d kvs k =
+  try List.assoc k kvs with Not_found -> d
+
 let list_assoc_flip xs = 
   let r (x, y) = (y, x) in
     List.map r xs
