@@ -114,17 +114,18 @@ let flip    = fun f x y   -> f y x
 
 module type EMapType = sig
   include Map.S
-
-  val extend  : 'a t -> 'a t -> 'a t
-  val filter  : (key -> 'a -> bool) -> 'a t -> 'a t
-  val of_list : (key * 'a) list -> 'a t
-  val to_list : 'a t -> (key * 'a) list
-  val length  : 'a t -> int
-  val domain  : 'a t -> key list
-  val range   : 'a t -> 'a list
-  val join    : 'a t -> 'b t -> ('a * 'b) t
-  val adds    : key -> 'a -> 'a list t -> 'a list t
-  val single  : key -> 'a -> 'a t
+  
+  val extendWith : (key -> 'a -> 'a -> 'a) -> 'a t -> 'a t -> 'a t
+  val extend     : 'a t -> 'a t -> 'a t
+  val filter     : (key -> 'a -> bool) -> 'a t -> 'a t
+  val of_list    : (key * 'a) list -> 'a t
+  val to_list    : 'a t -> (key * 'a) list
+  val length     : 'a t -> int
+  val domain     : 'a t -> key list
+  val range      : 'a t -> 'a list
+  val join       : 'a t -> 'b t -> ('a * 'b) t
+  val adds       : key -> 'a -> 'a list t -> 'a list t
+  val single     : key -> 'a -> 'a t
 end
 
 module type ESetType = sig
@@ -144,6 +145,12 @@ module EMap (K: Map.OrderedType) =
   struct
     include Map.Make(K)
 
+    let extendWith (f: key -> 'a -> 'a -> 'a) (m1: 'a t) (m2: 'a t) =
+      fold begin fun k v m -> 
+        let v' = if mem k m then f k v (find k m) else v in
+        add k v' m
+      end m2 m1 
+    
     let extend (m1: 'a t)  (m2: 'a t) : 'a t = fold add m2 m1
 
     (* in 3.12 *)
