@@ -200,7 +200,6 @@ module type KeyValType =
 module MapWithDefault (K: KeyValType) =
   struct
     include EMap(K)
-
     let find (i: K.t) (m: K.v t): K.v =
       try find i m with Not_found -> K.default
   end
