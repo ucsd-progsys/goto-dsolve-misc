@@ -48,6 +48,7 @@ let dot_file: string option ref = ref None   (* translate to dot file *)
 let purify_function_application = ref true  (* replace fun-terms by existentially quantified variables *)
 let z3_timeout           = ref 25
 
+let fastscalar                  = ref false (* -fastscalar *)
 let minquals                    = ref false (* -minquals *)
 let ptag                        = ref true  (* -ptag *)
 let genspec                     = ref false (* -genspec *)
@@ -168,6 +169,9 @@ let arg_spec =
    ("-manual",
     Arg.Set manual,
     " only verify manually-inserted checks");
+   ("-fastscalar",
+    Arg.Set fastscalar,
+    " use new (experimental) fastscalar solver, eventually will be default"); 
    ("-minquals",
     Arg.Set minquals,
     " minimize qualifiers by using pre-computed one-level implication ");
