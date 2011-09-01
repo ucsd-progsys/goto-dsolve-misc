@@ -114,7 +114,6 @@ let flip    = fun f x y   -> f y x
 
 module type EMapType = sig
   include Map.S
-  
   val extendWith : (key -> 'a -> 'a -> 'a) -> 'a t -> 'a t -> 'a t
   val extend     : 'a t -> 'a t -> 'a t
   val filter     : (key -> 'a -> bool) -> 'a t -> 'a t
