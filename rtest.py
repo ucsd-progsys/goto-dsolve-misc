@@ -94,7 +94,14 @@ class TestRunner:
         return (failcount != 0)
 
     def directory_tests (self, dir, expected_status):
-        return it.chain(*[[(os.path.join (dir, file), expected_status) for file in files if self.config.is_test (file)] for dir, dirs, files in os.walk(dir)])
+        tests = list()
+        for dir, dirs, files in os.walk (dir):
+            def join_dir (file):
+                return os.path.join (dir, file)
+            for file in map (join_dir, files):
+                if self.config.is_test (file):
+                    tests.append ((file, expected_status))
+        return tests
 
     def run (self):
         return self.run_tests (it.chain (*[self.directory_tests (dir, expected_status) for dir, expected_status in self.config.testdirs]))
