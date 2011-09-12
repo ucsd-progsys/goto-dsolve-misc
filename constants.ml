@@ -39,6 +39,8 @@ let ctypes_only         = ref false            (* -ctypes *)
 let ol_default          = 2
 let verbose_level       = ref ol_default       (* -v *)
 let inccheck            = ref SS.empty         (* -inccheck *)
+
+let strictsortcheck     = ref false            (* -strictsortcheck *)
 let latex_file: string option ref = ref None   (* translate to LaTeX *)
 let armc_file: string option ref  = ref None   (* translate to ARMC *)
 let horn_file: string option ref  = ref None   (* translate to Horn clauses *)
@@ -162,6 +164,10 @@ let arg_spec =
    ("-drconstr", 
     Arg.Set dump_ref_constraints, 
     " Dump refinement constraints [false]");
+   ("-strictsortcheck",
+    Arg.Set strictsortcheck,
+    " Strict Sort Checking -- e.g. ptr/int comparisons -- for non-C constraints
+    [false]");
    ("-ctypes",
     Arg.Set ctypes_only,
     " Infer ctypes only [false]");
