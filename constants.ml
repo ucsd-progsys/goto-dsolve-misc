@@ -62,7 +62,7 @@ let prune_live                  = ref false (* -prunelive *)
 let print_nontriv               = ref false (* -print_nontriv *)
 let heapify_nonarrays           = ref true  (* heapify all stack variables *)
 let timeout                     = ref (-1)
-let lfp                         = ref false (* -lfp *)
+let lfp                         = ref true (* -nolfp *)
 let slice                       = ref true  (* -slice  *)
 (* JHALA: what do these do ? *)
 let psimple       = ref true            (* -psimple *)
@@ -148,9 +148,9 @@ let arg_spec =
    ("-noslice",
    Arg.Clear slice,
    " Compute fixpoint for all kvars, not just those affecting property"); 
-   ("-lfp",
-   Arg.Set lfp,
-   " Compute least-fixpoint solution without weakening environment"); 
+   ("-nolfp",
+   Arg.Clear lfp,
+   " Weaken environment (do not produce least fixed-point solution)"); 
    ("-origdeps",
      Arg.Clear adjdeps,
      " Don't adjust constraint dependencies [true]");
