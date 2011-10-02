@@ -306,8 +306,8 @@ let is_prefix p s =
 
 let is_pure_function s =
   s = "validptr" || 
-  s = "assert" || 
-  s = "assume"
+  s = "lcc_assert" || 
+  s = "lcc_assume"
 
 let is_cil_tempvar s = 
   Misc.is_prefix "__cil_tmp" s || 
