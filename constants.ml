@@ -70,6 +70,8 @@ let simple        = ref true            (* -simple  *)
 let dump_graph    = ref false           (* -dgraph :: this probably caused the dsolve solver to dump the constraint graph *)
 let dropcalls     = ref false           (* -dropcalls *)
 let adjdeps       = ref true            (* -origdeps *)
+let check_is      = ref false           (* -check-indices *)
+let trace_scalar  = ref false           (* -trace-scalar *)
 
 (****************************************************************)
 (************* Output levels ************************************)
@@ -295,6 +297,12 @@ let arg_spec =
     Arg.Set (print_nontriv),
     " print non-trivial bindings in each environment [false]"
    );
+   ("-trace-scalar",
+    Arg.Set(trace_scalar),
+    " print constraints and index values in the Index solver");
+   ("-check-indices",
+    Arg.Set(check_is),
+    " sanity check computed indices");
   ]
 
 
