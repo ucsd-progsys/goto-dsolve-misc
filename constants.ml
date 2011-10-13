@@ -72,6 +72,7 @@ let dropcalls     = ref false           (* -dropcalls *)
 let adjdeps       = ref true            (* -origdeps *)
 let check_is      = ref false           (* -check-indices *)
 let trace_scalar  = ref false           (* -trace-scalar *)
+let prune_index   = ref false           (* -prune-index *)  
 
 (****************************************************************)
 (************* Output levels ************************************)
@@ -303,6 +304,9 @@ let arg_spec =
    ("-check-indices",
     Arg.Set(check_is),
     " sanity check computed indices");
+   ("-prune-index",
+    Arg.Set(prune_index),
+    " use the index domain to prune initial solution");
   ]
 
 
