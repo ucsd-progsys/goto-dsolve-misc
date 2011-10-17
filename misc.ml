@@ -79,11 +79,6 @@ let asserts p fmt =
 let assertf fmt =
   Printf.ksprintf failwith fmt
 
-let guard f fmt x = 
-  if f x 
-
-(a -> bool) -> a -> a
-
 let halt _ =
   assert false
 
