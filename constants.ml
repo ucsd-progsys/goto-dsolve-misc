@@ -298,7 +298,7 @@ let arg_spec =
    ); 
    ("-simp",
     Arg.String ((:=) dump_simp),
-    " print simplified constraints to save-file (experimental) use [andrey] or [jhala] "
+    " print simplified constraints to save-file (experimental) use [andrey] or [jhala] or [id]"
    );
    ("-print-nontriv",
     Arg.Set (print_nontriv),
