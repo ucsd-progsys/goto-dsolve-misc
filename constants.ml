@@ -56,6 +56,7 @@ let ptag                        = ref true  (* -ptag *)
 let genspec                     = ref false (* -genspec *)
 let simplify_t                  = ref false (* simplify and prune vacuous FixConstraint.t constraints *)
 let root                        = ref ""    (* root function *)
+let default_sort                = ref false (* -defaultsort *)
 let true_unconstrained          = ref true  (* -true_unconstrained *)
 let do_nothing                  = ref false (* -nop *)
 let dump_imp                    = ref false (* -imp *)
@@ -202,6 +203,9 @@ let arg_spec =
    ("-dgraph", 
     Arg.Set dump_graph, 
     " dump constraints SCC to constraints.dot [false]");
+   ("-defaultsort",
+    Arg.Set default_sort,
+    " give missing variables default sort (int) -- for backward compatibility with dsolve constraints, DONT USE!");
    ("-notruekvars",
     Arg.Clear true_unconstrained,
     " don't true unconstrained kvars [true]");
