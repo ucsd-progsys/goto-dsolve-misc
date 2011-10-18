@@ -70,6 +70,8 @@ module Ops = struct
 
   let failure fmt = Printf.ksprintf failwith fmt
 
+  let foreach xs f = List.map f xs
+
 let asserti p fmt = 
   Printf.ksprintf (fun x -> if not p then (print_string (x^"\n"); ignore(0/0)) else ()) fmt
 
@@ -408,6 +410,16 @@ let mapfold_rev f b xs =
 let mapfold f b xs =
   mapfold_rev f b xs 
   |> app_snd List.rev 
+
+let rootsBy leq xs = 
+  let notDomBy x = not <.> (leq x) in
+  let rec loop acc = function
+    | [] -> 
+        acc
+    | (x::xs) ->
+        let acc', xs' = map_pair (List.filter (notDomBy x)) (acc, xs) in
+        loop (x::acc') xs'
+  in loop [] xs
 
 let cov_filter cov f xs = 
   let rec loop acc = function
@@ -1086,3 +1098,7 @@ let with_ref_at x v f =
   let _    = x := oldv in
   res
 
+let rec isPrefix = function
+  | ([], _)                   -> true
+  | (x::xs, y::ys) when x = y -> isPrefix (xs, ys)
+  | _                         -> false
