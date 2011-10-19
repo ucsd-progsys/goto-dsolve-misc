@@ -476,6 +476,12 @@ let product = function
   | e :: es -> rev_perms (fast_unflat [] e) es
   | es -> es 
 
+let pairs xs =
+  let rec pairs_aux ps = function
+    | [] -> ps
+    | x :: xs -> pairs_aux (List.fold_left (fun ps y -> (x, y) :: ps) ps xs) xs
+  in pairs_aux [] xs
+
 let cross_product xs ys = 
   map begin fun x ->
     map begin fun y ->
@@ -973,6 +979,12 @@ let resi_opt f = function
 
 let opt_iter f l = 
   List.iter (resi_opt f) l
+
+let array_findi p arr =
+  let rec look i =
+    if i < 0 then raise Not_found else
+      if p arr.(i) then i else look i - 1
+  in look (Array.length arr - 1)
 
 let array_to_index_list a =
   Array.fold_left (fun (i,rv) v -> (i+1,(i,v)::rv)) (0,[]) a
