@@ -774,7 +774,9 @@ let maybe_map f = function Some x -> Some (f x) | None -> None
 
 let maybe_iter f = function Some x -> f x | None -> ()
 
-let maybe = function Some x -> x | _ -> assertf "maybe called with None" 
+let maybe = function Some x -> x | _ -> assertf "maybe called with None"
+
+let maybe_apply f xo v = match xo with Some x -> f x v | _ -> v
 
 let rec maybe_chain x d = function 
   | f::fs -> (match f x with 
