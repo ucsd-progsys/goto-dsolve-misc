@@ -389,6 +389,8 @@ let tmap3      = fun (f, g, h) x    -> (f x, g x, h x)
 let iter_fst   = fun f (a, b)       -> f a
 let iter_snd   = fun f (a, b)       -> f b
 
+let dup x      = (x, x)
+
 let split3 lst =
   List.fold_right (fun (x, y, z) (xs, ys, zs) -> (x :: xs, y :: ys, z :: zs)) lst ([], [], [])
 
