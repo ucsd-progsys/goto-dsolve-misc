@@ -57,6 +57,7 @@ let genspec                     = ref false (* -genspec *)
 let simplify_t                  = ref false (* simplify and prune vacuous FixConstraint.t constraints *)
 let root                        = ref ""    (* root function *)
 let refine_sort                 = ref false (* -refinesort *)
+let sorted_quals                = ref false (* -sortedquals *)
 
 let true_unconstrained          = ref true  (* -true_unconstrained *)
 let do_nothing                  = ref false (* -nop *)
@@ -208,6 +209,9 @@ let arg_spec =
     Arg.Set refine_sort,
     " use sortchecking to refine constraints -- and toss out badly instantiated quals. 
       Shouldn't need except for backward compatibility with dsolve constraints, DONT USE!");
+   ("-sortedquals",
+    Arg.Set sorted_quals,
+    " RLG: missing switch required by liquidc/fixpoint, I don't know what it does");
    ("-notruekvars",
     Arg.Clear true_unconstrained,
     " don't true unconstrained kvars [true]");
