@@ -507,6 +507,18 @@ let cross_product xs ys =
   end xs
   |> flatten
 
+let rec cross_flatten = function
+  | []      -> 
+      [[]]
+  | xs::xss ->
+      map begin fun x ->
+        map begin fun ys ->
+          (x::ys)
+        end (cross_flatten xss)
+      end xs
+      |> flatten
+
+
 let append_pref p s =
   (p ^ "." ^ s)
 
