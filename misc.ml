@@ -72,11 +72,14 @@ module Ops = struct
 
   let foreach xs f = List.map f xs
 
-let asserti p fmt = 
-  Printf.ksprintf (fun x -> if not p then (print_string (x^"\n"); ignore(0/0)) else ()) fmt
-
 let asserts p fmt =
   Printf.ksprintf (fun x -> if not p then failwith x) fmt
+
+let asserti = asserts
+  (*
+let asserti p fmt = 
+  Printf.ksprintf (fun x -> if not p then (print_string (x^"\n"); ignore(0/0)) else ()) fmt
+*)
 
 let assertf fmt =
   Printf.ksprintf failwith fmt

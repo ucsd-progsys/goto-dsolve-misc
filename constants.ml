@@ -57,7 +57,7 @@ let genspec                     = ref false (* -genspec *)
 let simplify_t                  = ref false (* simplify and prune vacuous FixConstraint.t constraints *)
 let root                        = ref ""    (* root function *)
 let refine_sort                 = ref false (* -refinesort *)
-
+let sorted_quals                = ref false (* -sortedquals*)
 let true_unconstrained          = ref true  (* -true_unconstrained *)
 let do_nothing                  = ref false (* -nop *)
 let dump_imp                    = ref false (* -imp *)
@@ -204,7 +204,11 @@ let arg_spec =
    ("-dgraph", 
     Arg.Set dump_graph, 
     " dump constraints SCC to constraints.dot [false]");
-   ("-refinesort",
+   ("-sortedquals",
+    Arg.Set sorted_quals,
+    " use sorted parameters in the qualifiers, to speed up instantiation. Should
+      become default after vetting.");
+    ("-refinesort",
     Arg.Set refine_sort,
     " use sortchecking to refine constraints -- and toss out badly instantiated quals. 
       Shouldn't need except for backward compatibility with dsolve constraints, DONT USE!");
